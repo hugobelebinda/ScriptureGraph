@@ -1,0 +1,22 @@
+{
+  "name": "scripturegraph",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "Backend",
+    "Frontend"
+  ],
+  "scripts": {
+    "download-bible": "tsx scripts/download-bible.ts",
+    "generate:book-covers": "node scripts/generate-book-cover-svgs.mjs",
+    "dev:api": "npm run dev -w scripturegraph-backend",
+    "dev:web": "npm run dev -w scripturegraph-frontend",
+    "postinstall": "npm run prisma:generate -w scripturegraph-backend",
+    "prisma:generate": "npm run prisma:generate -w scripturegraph-backend"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  }
+}

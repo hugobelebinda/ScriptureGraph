@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Verse {
+  uid          String @id
+  text_en      String @db.Text
+  text_fr      String @db.Text
+  book_name_en String
+  book_name_fr String
+}
+
+model CrossReference {
+  id         Int    @id @default(autoincrement())
+  source_uid String
+  target_uid String
+  weight     Int
+
+  @@unique([source_uid, target_uid])
+  @@index([source_uid])
+  @@index([target_uid])
+}
