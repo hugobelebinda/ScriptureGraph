@@ -70,7 +70,14 @@ type VerseRow = {
   book_name_fr: string;
 };
 
-type ContentPiece = string | { noteId?: number; [k: string]: unknown };
+type ContentPiece =
+  | string
+  | {
+      noteId?: number;
+      text?: string;
+      lineBreak?: boolean;
+      [k: string]: unknown;
+    };
 
 interface ChapterJson {
   book?: { id?: string; name?: string };
@@ -79,7 +86,28 @@ interface ChapterJson {
 
 function flattenVerseText(pieces: ContentPiece[] | undefined): string {
   if (!pieces?.length) return "";
-  return pieces.map((p) => (typeof p === "string" ? p : "")).join("").trim();
+  const out: string[] = [];
+  for (const p of pieces) {
+    if (typeof p === "string") {
+      out.push(p);
+      continue;
+    }
+    if (p?.lineBreak) {
+      out.push("\n");
+      continue;
+    }
+    if (typeof p?.text === "string") {
+      out.push(p.text);
+      continue;
+    }
+  }
+  return out
+    .join("")
+    .replace(/[ \t]+\n/g, "\n")
+    .replace(/\n[ \t]+/g, "\n")
+    .replace(/[ \t]+/g, " ")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
 }
 
 function uidFor(book: string, chapter: number, verse: number): string {

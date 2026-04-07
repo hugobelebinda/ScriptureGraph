@@ -99,6 +99,129 @@
   "graph": {
     "pendingBook": "Queued book: {{book}} ({{code}}) — full graph UI coming next."
   },
+  "compass": {
+    "intro": "These cards are for the days your heart is loud. Choose the one that sounds most like how you feel, then click a verse reference to sit with God and his word.",
+    "pickVerseHint": "Click a reference below to read the verse and a short note about its context.",
+    "noVerseSelected": "Choose a reference on the left to see the verse and reflection here.",
+    "loadingVerse": "Loading this verse from the Scriptures…",
+    "missingSummary": "Reflection coming soon for this reference.",
+    "card": {
+      "peace": {
+        "title": "If you’re feeling restless or anxious",
+        "subtitle": "Verses where God meets his people with peace."
+      },
+      "anxious": {
+        "title": "If worry keeps looping in your mind",
+        "subtitle": "When fear is loud, these passages show how God holds us."
+      },
+      "lonely": {
+        "title": "If you feel unseen or alone",
+        "subtitle": "For nights when it feels like no one notices or stays."
+      },
+      "grief": {
+        "title": "If your heart is grieving or broken",
+        "subtitle": "When loss is heavy, these writers cry out with you."
+      },
+      "guilt": {
+        "title": "If you feel dirty, ashamed, or beyond forgiveness",
+        "subtitle": "Words for when you wonder if God can still want you."
+      },
+      "hope": {
+        "title": "If you feel stuck or hopeless about the future",
+        "subtitle": "Promises that lift our eyes when we can’t see a way forward."
+      },
+      "weary": {
+        "title": "If you are exhausted in body or soul",
+        "subtitle": "For seasons when you’re simply tired of carrying so much."
+      },
+      "joy": {
+        "title": "If you long to feel joy again",
+        "subtitle": "Verses that trace joy not to circumstances but to God himself."
+      }
+    },
+    "summaries": {
+      "peace": {
+        "PHP_4_6": "Paul writes from prison to a worried church in Philippi, inviting them to redirect every anxiety into honest prayer and thanksgiving. Instead of pretending fear isn’t real, he shows how bringing it to God opens space for a deeper peace.",
+        "PHP_4_7": "Here Paul names peace not as a feeling we manufacture, but as God’s own guarding presence over hearts and minds in Christ. Even when nothing outside changes, God himself stands watch over the places inside us that spin.",
+        "JHN_14_27": "On the night before the cross, Jesus prepares his friends for confusion and loss. He contrasts his peace with the fragile comfort the world offers, promising a deep steadiness that remains even when everything familiar shakes.",
+        "PSA_23_1": "David looks back on a life full of danger and betrayal yet dares to call the Lord his shepherd. This opening line is a quiet declaration that with God leading and providing, he will not be ultimately lacking, even in wilderness seasons.",
+        "ISA_26_3": "Isaiah speaks to a shaken people and points them to a mind stayed on the Lord. Peace grows where trust is steady—because God himself is steady.",
+        "PSA_4_8": "David ends his prayer with a decision to lie down in peace, not because all threats are gone, but because the Lord makes him dwell in safety. Rest is an act of trust.",
+        "PSA_46_10": "In a psalm about upheaval and nations raging, God interrupts with a command: be still and know. Peace begins when we stop striving to control what only God can hold.",
+        "MAT_5_9": "Jesus calls peacemakers blessed because they resemble their Father. Peace here isn’t passive; it’s a God-shaped way of moving toward people with reconciliation."
+      },
+      "anxious": {
+        "MAT_6_34": "In the Sermon on the Mount, Jesus speaks into everyday worries about money, food, and tomorrow. He isn’t dismissing planning, but calling anxious hearts to trust a Father who is already present in every coming day.",
+        "_1PE_5_7": "Peter writes to scattered believers who are suffering and marginalized. He invites them to literally throw their cares onto God with the reassurance that the Lord is not distant from their pain but deeply attentive.",
+        "ISA_41_10": "Spoken to Israel in fear of powerful empires, this promise roots courage not in self-confidence but in God’s nearness, strength, and upholding hand. The one who chose them also stands beside and underneath them.",
+        "PSA_56_3": "David is on the run from enemies when he pens this line. He doesn’t wait until fear is gone; he names it plainly and chooses trust in the very moment his heart trembles.",
+        "PSA_56_4": "David’s fear is real, but he anchors his confidence in God’s word—what God has said about his character. Anxiety loosens when God’s promises get louder than the threat.",
+        "PSA_46_1": "When everything feels unstable, this psalm names God as a present refuge—not just an idea. The help is “very ready,” meaning God is near in the trouble, not only after it ends.",
+        "_2TI_1_7": "Paul urges Timothy not to shrink back, reminding him that God’s Spirit is not fear’s source. Courage, love, and self-control are gifts God supplies for anxious moments.",
+        "JHN_14_1": "Jesus speaks to disciples whose hearts are about to be shattered. He doesn’t shame their distress; he redirects it—“believe”—toward trust in him and the Father."
+      },
+      "lonely": {
+        "PSA_27_10": "Even if the most basic human bonds fail, David insists that the Lord himself takes him in. This verse speaks into rejection and abandonment with the promise of a God who does not walk away.",
+        "JHN_14_18": "Jesus assures his disciples that his physical departure will not leave them as spiritual orphans. By the Spirit’s presence, the risen Christ stays profoundly near to those who feel left behind.",
+        "HEB_13_5": "To believers tempted to seek security in possessions or people, Hebrews repeats God’s ancient promise: “I will never leave you nor forsake you.” Our truest safety does not rest on human constancy.",
+        "ISA_49_15": "Through Isaiah, God compares his covenant love to the most tender human image—a nursing mother—and then goes beyond it. Even if human compassion can fail, God insists that his heart for his people does not.",
+        "_2TI_4_16": "At Paul’s defense, he says no one stood with him. Scripture doesn’t hide isolation—even faithful servants can be abandoned by friends.",
+        "_2TI_4_17": "In the very next breath, Paul says the Lord stood by him and strengthened him. God’s presence is not a slogan; it’s the companionship that carried Paul through.",
+        "PSA_68_6": "This worship song describes God as one who sets the lonely into families. God’s heart moves toward the isolated and makes room for belonging among his people.",
+        "PRO_18_24": "Proverbs admits that some relationships fail, yet points to the possibility of a friend who sticks closer than a brother. For many believers, this becomes a window into God’s faithful friendship."
+      },
+      "grief": {
+        "PSA_34_18": "David describes the Lord as uniquely close to the brokenhearted and crushed. Rather than expecting quick recovery, this psalm pictures God bending near to those whose spirits feel shattered.",
+        "MAT_5_4": "In the Beatitudes, Jesus strangely calls mourners “blessed” because they will be comforted. In the kingdom, grief is not a sign of God’s absence but a place where his consolation meets us.",
+        "JHN_11_35": "At Lazarus’ tomb, knowing he will raise his friend, Jesus still weeps. God in the flesh does not rush past sorrow but stands inside it with us, validating tears as he moves toward resurrection.",
+        "REV_21_4": "John’s vision pulls our eyes to the end of the story where God personally wipes away every tear. Present grief is not the final chapter; God is moving history toward a world without death or mourning.",
+        "ISA_61_3": "Isaiah’s promise speaks to people who have lived through devastation. God doesn’t just remove ashes—he gives beauty and turns mourning into worship over time.",
+        "_2CO_1_3": "Paul begins by blessing “the Father of mercies” because he has learned God’s character through suffering. Comfort is rooted in who God is, not in a painless life.",
+        "_2CO_1_4": "Paul says God comforts us so we can comfort others. Grief becomes a place where God’s help is received and then shared—turning pain into compassion.",
+        "PSA_147_3": "This psalm praises God for rebuilding and healing the wounded heart. It pictures God as a healer who attends to inner fractures, not only external problems."
+      },
+      "guilt": {
+        "_1JN_1_9": "John writes to Christians tempted either to minimize sin or drown in shame. He holds both together: if we confess honestly, God is faithful and just—not reluctant—to forgive and to cleanse deeply.",
+        "PSA_51_10": "After his collapse with Bathsheba and the arranged death of her husband, David asks not just for pardon but for a new heart. He knows only God can remake what his own choices have twisted.",
+        "ISA_1_18": "Speaking to a nation whose worship has been hollow and unjust, God invites them to wrestle with him: though their sins are scarlet, he can make them white as snow. The image is radical cleansing, not superficial cover.",
+        "ROM_8_1": "After unpacking human failure and God’s rescue in Christ, Paul declares that there is now no condemnation for those in Jesus. The courtroom image shifts: the verdict over those who trust him is already “no guilt.”",
+        "PSA_32_1": "David celebrates the relief of forgiven sin—when the weight is lifted and covered by grace. Forgiveness is not denial; it is God’s decisive act toward the repentant.",
+        "PSA_32_5": "David describes the turning point: he stops hiding and names his sin to God. Confession becomes the doorway to mercy, not a trap for shame.",
+        "MIC_7_18": "Micah marvels at a God who delights in steadfast love and pardons iniquity. This verse reframes God’s heart: he is not eager to punish but eager to show mercy.",
+        "PSA_51_1": "David begins his confession by appealing to God’s loving kindness and tender mercies. He doesn’t bargain; he pleads based on God’s character as gracious."
+      },
+      "hope": {
+        "ROM_15_13": "Paul closes a section about Jews and Gentiles together in Christ by praying that the God of hope would fill believers with joy and peace. Hope here is not optimism but a Spirit-given confidence as we trust him.",
+        "PSA_42_11": "The psalmist talks to his own soul in the middle of depression and exile. He doesn’t pretend things are fine; he preaches hope to himself based on who God is and the promise of future praise.",
+        "LAM_3_22": "In the ashes of Jerusalem’s destruction, the poet clings to this thread: the steadfast love of the Lord has not been exhausted. Even after judgment, God’s covenant mercy renews morning by morning.",
+        "HEB_10_23": "Writing to a tired community, Hebrews urges them to hold fast to their confession of hope. The anchor is not their grip but the character of the One who promised and cannot lie.",
+        "ROM_8_24": "Paul explains that Christian hope isn’t about what we already see. If we could see the whole answer now, it wouldn’t be hope—God trains us to wait with trust.",
+        "ROM_8_25": "Waiting is hard, so Paul describes hope as patient endurance. It’s not passive resignation; it’s holding on to God’s future while living in the present.",
+        "ROM_8_28": "Paul writes to believers facing suffering and insists that God is still working for good in the lives of those who love him. Hope here is confidence in God’s providence, not denial of pain.",
+        "ROM_15_4": "Paul says Scripture was written to give endurance and encouragement so we might have hope. God uses the stories and promises of the Bible to keep us standing."
+      },
+      "weary": {
+        "MAT_11_28": "Jesus calls the burned-out and overburdened to come directly to him for rest. It’s a personal invitation from someone who sees the weight we carry and does not add more religious pressure.",
+        "MAT_11_29": "Jesus doesn’t offer a life without a yoke—he offers his yoke: gentle and humble, training weary hearts in a new way of living. Rest comes from walking with him, not from carrying alone.",
+        "ISA_40_31": "Addressed to exiles who feel forgotten, this promise says that those who wait on the Lord will renew their strength. God does not grow tired, and he shares his endurance with those who collapse into him.",
+        "_2CO_12_9": "When Paul begs God to remove a persistent weakness, the Lord answers that his grace is enough and his power is made perfect in weakness. Rather than despising limitation, Paul learns to meet Christ there.",
+        "PSA_62_5": "David instructs his own soul to rest in God alone. Surrounded by threats and instability, he chooses to anchor his expectation not in outcomes but in God’s steady salvation.",
+        "HEB_12_3": "Hebrews tells tired believers to consider Jesus, who endured hostility, so they won’t grow weary and lose heart. Strength comes from remembering the endurance of Christ.",
+        "GAL_6_9": "Paul encourages a community tempted to quit doing good. He reminds them that perseverance matters—God sees hidden faithfulness and promises a harvest in due time.",
+        "PSA_40_1": "David remembers a season of long waiting and testifies that the Lord inclined to hear him. When exhaustion is quiet and slow, God’s listening presence is still active."
+      },
+      "joy": {
+        "PSA_16_11": "David looks beyond present trouble to the reality of God’s presence. For him, the deepest joy and truest pleasures are found not in circumstances but at God’s right hand.",
+        "PSA_30_11": "After being rescued from a near-death experience, David describes God turning his mourning into dancing. Sorrow is real, but it is not the only word God can speak over a life.",
+        "_1TH_5_18": "To a young church facing pressure, Paul urges constant gratitude—not because everything is good, but because God is at work in all things. Joy and thankfulness become acts of trust in his will.",
+        "JAS_1_2": "James shocks us by telling scattered believers to count trials as joy. He is not romanticizing pain; he sees how God uses hardship to grow a steadfast, mature faith.",
+        "PSA_100_4": "This psalm invites worshipers to enter God’s presence with thanksgiving and praise. Joy is practiced as we remember who God is and what he has done.",
+        "PSA_103_1": "David calls his own soul to bless the Lord. Joy often begins with a deliberate remembering—turning the heart toward God when feelings lag behind.",
+        "PSA_103_2": "David continues: don’t forget God’s benefits. Gratitude reorders the mind, making room for joy rooted in God’s gifts rather than in perfect circumstances.",
+        "_2CO_9_15": "Paul ends a section on generous giving by bursting into worship: God’s gift is indescribable. Joy grows when our eyes lift from what we lack to what God has already given in Christ."
+      }
+    }
+  },
   "chronology": {
     "title": "Biblical timeline",
     "intro": "Books are ordered by when their story mainly happens in history (not by the table of contents in a printed Bible). For example, Job comes soon after Genesis because its setting belongs to the patriarchal world. Hover or focus a row for mainstream scholarly notes on dating and composition.",

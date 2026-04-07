@@ -31,6 +31,35 @@ export type ConnectionsPayload = {
   connections: ConnectionDto[];
 };
 
+export type ParsedUid = {
+  book: string;
+  chapter: number;
+  verse: number;
+};
+
+const chapterCache = new Map<string, ChapterPayload>();
+
+export function parseUid(uid: string): ParsedUid | null {
+  const parts = uid.trim().split(".");
+  if (parts.length !== 3) return null;
+  const [book, ch, vs] = parts;
+  const chapter = Number(ch);
+  const verse = Number(vs);
+  if (!book || !Number.isFinite(chapter) || !Number.isFinite(verse)) return null;
+  return { book: book.toUpperCase(), chapter, verse };
+}
+
+export function findVerseInChapter(
+  chapter: ChapterPayload,
+  verseNumber: number,
+): VerseDto | null {
+  return (
+    chapter.verses.find(
+      (v) => parseUid(v.uid)?.verse === verseNumber,
+    ) ?? null
+  );
+}
+
 /**
  * Fetches from `/api/...` (Vite dev proxy → Express). Always sends current UI `lang`
  * for verse text and connection snippets.
@@ -40,14 +69,26 @@ export function useBibleData() {
   const lang = useMemo(() => uiLang, [uiLang]);
 
   const fetchChapter = useCallback(
-    async (book: string, chapter: number): Promise<ChapterPayload> => {
+    async (
+      book: string,
+      chapter: number,
+      opts?: { bypassCache?: boolean },
+    ): Promise<ChapterPayload> => {
+      const cacheKey = `${lang}:${book.toUpperCase()}:${chapter}`;
+      if (!opts?.bypassCache) {
+        const cached = chapterCache.get(cacheKey);
+        if (cached) return cached;
+      }
+
       const q = new URLSearchParams({ lang });
       const url = `${API_BASE}/api/verses/${encodeURIComponent(book)}/${chapter}?${q}`;
       const res = await fetch(url);
       if (!res.ok) {
         throw new Error(`Verses ${res.status}: ${await res.text()}`);
       }
-      return res.json() as Promise<ChapterPayload>;
+      const data = (await res.json()) as ChapterPayload;
+      chapterCache.set(cacheKey, data);
+      return data;
     },
     [lang],
   );

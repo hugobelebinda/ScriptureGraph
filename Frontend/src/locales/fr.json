@@ -99,6 +99,129 @@
   "graph": {
     "pendingBook": "Livre présélectionné : {{book}} ({{code}}) — l’interface graphe arrive ensuite."
   },
+  "compass": {
+    "intro": "Ces cartes sont pour les jours où le cœur déborde. Choisissez celle qui ressemble le plus à ce que vous ressentez, puis cliquez sur un verset pour vous asseoir avec Dieu et sa Parole.",
+    "pickVerseHint": "Cliquez sur une référence ci‑dessous pour lire le verset et un court rappel de son contexte.",
+    "noVerseSelected": "Choisissez une référence à gauche pour voir ici le verset et la réflexion.",
+    "loadingVerse": "Chargement de ce verset dans les Écritures…",
+    "missingSummary": "Réflexion à venir pour cette référence.",
+    "card": {
+      "peace": {
+        "title": "Si vous vous sentez agité ou anxieux",
+        "subtitle": "Des versets où Dieu rencontre son peuple avec la paix."
+      },
+      "anxious": {
+        "title": "Si les soucis tournent en boucle dans vos pensées",
+        "subtitle": "Quand la peur est forte, ces textes montrent comment Dieu nous porte."
+      },
+      "lonely": {
+        "title": "Si vous vous sentez seul(e) ou oublié(e)",
+        "subtitle": "Pour les soirs où il semble que personne ne voit ni ne reste."
+      },
+      "grief": {
+        "title": "Si votre cœur est en deuil ou brisé",
+        "subtitle": "Quand la perte est lourde, ces auteurs crient avec vous."
+      },
+      "guilt": {
+        "title": "Si vous vous sentez sale, honteux(se) ou irrécupérable",
+        "subtitle": "Des paroles pour quand vous doutez que Dieu puisse encore vous vouloir."
+      },
+      "hope": {
+        "title": "Si vous vous sentez bloqué(e) ou sans espoir",
+        "subtitle": "Des promesses qui relèvent le regard quand on ne voit plus d’issue."
+      },
+      "weary": {
+        "title": "Si vous êtes épuisé(e) dans le corps ou l’âme",
+        "subtitle": "Pour les saisons où vous êtes simplement fatigué(e) de tout porter."
+      },
+      "joy": {
+        "title": "Si vous aspirez à retrouver la joie",
+        "subtitle": "Des versets qui rattachent la joie non aux circonstances, mais à Dieu lui‑même."
+      }
+    },
+    "summaries": {
+      "peace": {
+        "PHP_4_6": "Paul écrit depuis la prison à une Église inquiète à Philippes et les invite à transformer chaque sujet d’angoisse en prière et en reconnaissance. Plutôt que de nier la peur, il montre comment la déposer devant Dieu ouvre un espace pour une paix plus profonde.",
+        "PHP_4_7": "Ici, Paul décrit la paix non comme un sentiment que nous produisons, mais comme la présence gardienne de Dieu sur nos cœurs et nos pensées en Christ. Même si rien n’a changé à l’extérieur, Dieu lui‑même veille sur ce qui s’agite en nous.",
+        "JHN_14_27": "La nuit avant la croix, Jésus prépare ses amis à la confusion et à la perte. Il oppose sa paix au réconfort fragile du monde, promettant une stabilité intérieure qui reste quand tout le reste vacille.",
+        "PSA_23_1": "David repense à une vie pleine de dangers et de trahisons et ose pourtant appeler l’Éternel son berger. Cette première phrase affirme calmement qu’avec Dieu qui conduit et pourvoit, il ne sera pas finalement dans le manque, même en plein désert.",
+        "ISA_26_3": "Ésaïe parle à un peuple ébranlé et oriente vers un esprit ferme, attaché à l’Éternel. La paix grandit là où la confiance demeure—car Dieu demeure.",
+        "PSA_4_8": "David conclut sa prière par une décision : se coucher en paix, non parce que tout danger a disparu, mais parce que l’Éternel le fait habiter en sécurité. Le repos est un acte de confiance.",
+        "PSA_46_10": "Dans un psaume où tout tremble et les nations grondent, Dieu interrompt : « Arrêtez, et sachez. » La paix commence quand on cesse de tout contrôler et qu’on reconnaît Dieu.",
+        "MAT_5_9": "Jésus déclare heureux ceux qui procurent la paix, car ils ressemblent à leur Père. Ici la paix n’est pas l’inaction : c’est une démarche de réconciliation à l’image de Dieu."
+      },
+      "anxious": {
+        "MAT_6_34": "Dans le Sermon sur la montagne, Jésus parle aux inquiétudes concrètes pour demain, l’argent, le pain. Il ne méprise pas la prévoyance, mais appelle les cœurs anxieux à faire confiance à un Père déjà présent dans chaque jour à venir.",
+        "_1PE_5_7": "Pierre écrit à des croyants dispersés qui souffrent et sont marginalisés. Il les invite à jeter littéralement leurs soucis sur Dieu, avec l’assurance que le Seigneur n’est pas lointain mais profondément attentif à leur détresse.",
+        "ISA_41_10": "Adressée à Israël effrayé par la puissance des empires, cette promesse fonde le courage non sur la confiance en soi, mais sur la proximité de Dieu, sa force et sa main qui soutient. Celui qui les a choisis se tient aussi près d’eux et au‑dessous d’eux.",
+        "PSA_56_3": "David est en fuite devant ses ennemis lorsqu’il écrit ces mots. Il n’attend pas que la peur disparaisse : il la nomme clairement et choisit de faire confiance justement au moment où son cœur tremble.",
+        "PSA_56_4": "La peur existe, mais David ancre sa confiance dans la parole de Dieu—dans ce que Dieu a révélé de lui‑même. L’anxiété se desserre quand les promesses de Dieu deviennent plus fortes que la menace.",
+        "PSA_46_1": "Quand tout paraît instable, ce psaume affirme que Dieu est un refuge présent, pas seulement une idée. Son secours est « toujours offert » : il est proche au milieu de la détresse, pas seulement après.",
+        "_2TI_1_7": "Paul encourage Timothée à ne pas reculer : l’Esprit que Dieu donne n’est pas un esprit de peur. Courage, amour et maîtrise de soi sont des dons pour les moments anxieux.",
+        "JHN_14_1": "Jésus parle à des disciples dont le cœur va être bouleversé. Il ne les humilie pas ; il les redirige : « croyez »—vers une confiance en lui et en le Père."
+      },
+      "lonely": {
+        "PSA_27_10": "Même si les liens humains les plus fondamentaux lâchent, David affirme que l’Éternel le recueillera lui‑même. Ce verset parle dans le rejet et l’abandon en promettant un Dieu qui, lui, ne part pas.",
+        "JHN_14_18": "Jésus assure ses disciples que son départ physique ne les laissera pas orphelins. Par la présence de l’Esprit, le Christ ressuscité demeure profondément proche de ceux qui se sentent laissés derrière.",
+        "HEB_13_5": "Aux croyants tentés de chercher leur sécurité dans les biens ou les personnes, l’auteur rappelle l’ancienne promesse : « Je ne te délaisserai point et je ne t’abandonnerai point. » Notre vraie sûreté ne repose pas sur la constance humaine.",
+        "ISA_49_15": "Par Ésaïe, Dieu compare son amour d’alliance à l’image la plus tendre, celle d’une mère qui allaite, puis va au‑delà. Même si la compassion humaine peut faillir, il affirme que son cœur pour son peuple ne le fait pas.",
+        "_2TI_4_16": "Lors de sa défense, Paul dit que personne ne l’a soutenu. L’Écriture ne cache pas la solitude : même les serviteurs fidèles peuvent être abandonnés.",
+        "_2TI_4_17": "Aussitôt, Paul ajoute que le Seigneur, lui, s’est tenu près de lui et l’a fortifié. La présence de Dieu n’est pas un slogan : elle a porté Paul au travers.",
+        "PSA_68_6": "Ce cantique décrit Dieu comme celui qui donne une famille aux solitaires. Le cœur de Dieu se tourne vers l’isolé et ouvre une place d’appartenance parmi son peuple.",
+        "PRO_18_24": "Les Proverbes reconnaissent que certaines relations échouent, mais évoquent aussi un ami plus attaché qu’un frère. Beaucoup y voient un écho de la fidélité de Dieu."
+      },
+      "grief": {
+        "PSA_34_18": "David décrit l’Éternel comme particulièrement proche des cœurs brisés et des esprits abattus. Plutôt que d’exiger une guérison rapide, ce psaume montre Dieu penché vers ceux dont l’être intérieur semble en miettes.",
+        "MAT_5_4": "Dans les Béatitudes, Jésus appelle étrangement « heureux » ceux qui pleurent, parce qu’ils seront consolés. Dans le royaume, le deuil n’est pas un signe de l’absence de Dieu mais un lieu où sa consolation nous rejoint.",
+        "JHN_11_35": "Devant le tombeau de Lazare, sachant qu’il va le ressusciter, Jésus pleure quand même. Dieu fait homme ne contourne pas la tristesse, il se tient au milieu d’elle avec nous, validant les larmes tout en avançant vers la résurrection.",
+        "REV_21_4": "La vision de Jean oriente nos yeux vers la fin de l’histoire, où Dieu essuie personnellement toute larme. Le deuil présent n’est pas le dernier mot : Dieu conduit l’histoire vers un monde sans mort ni lamentation.",
+        "ISA_61_3": "Cette promesse s’adresse à des personnes passées par la dévastation. Dieu ne fait pas qu’enlever les cendres : il donne une beauté nouvelle et transforme le deuil en louange avec le temps.",
+        "_2CO_1_3": "Paul commence en bénissant le « Père des miséricordes », car il a appris le cœur de Dieu au travers des souffrances. La consolation dépend de qui est Dieu, pas d’une vie sans douleur.",
+        "_2CO_1_4": "Paul dit que Dieu nous console pour que nous consolions à notre tour. La douleur devient un lieu où l’aide de Dieu est reçue puis partagée, transformant la souffrance en compassion.",
+        "PSA_147_3": "Ce psaume loue Dieu qui reconstruit et qui guérit les cœurs brisés. Il présente Dieu comme un médecin de l’intérieur, attentif aux fractures cachées."
+      },
+      "guilt": {
+        "_1JN_1_9": "Jean s’adresse à des chrétiens tentés soit de minimiser le péché, soit de se noyer dans la honte. Il tient ensemble ces pôles : si nous confessons honnêtement, Dieu est fidèle et juste pour pardonner et purifier en profondeur.",
+        "PSA_51_10": "Après sa chute avec Bath‑Schéba et la mort arrangée de son mari, David demande non seulement le pardon mais un cœur nouveau. Il sait que seul Dieu peut refaire ce que ses propres choix ont déformé.",
+        "ISA_1_18": "Parlant à une nation dont le culte est creux et injuste, Dieu les invite à venir plaider avec lui : même si leurs péchés sont comme le cramoisi, il peut les rendre blancs comme la neige. L’image est celle d’un nettoyage radical, non d’un simple camouflage.",
+        "ROM_8_1": "Après avoir décrit la faillite humaine et l’œuvre de Christ, Paul déclare qu’il n’y a maintenant aucune condamnation pour ceux qui sont en Jésus. L’image du tribunal change : le verdict sur ceux qui se confient en lui est déjà « non coupable ».",
+        "PSA_32_1": "David célèbre le soulagement du pardon : le poids est levé et recouvert par la grâce. Le pardon n’est pas un déni, c’est l’acte décisif de Dieu envers celui qui se repent.",
+        "PSA_32_5": "David décrit le tournant : il cesse de cacher et nomme son péché devant Dieu. La confession devient la porte de la miséricorde, pas un piège à honte.",
+        "MIC_7_18": "Michée s’émerveille d’un Dieu qui prend plaisir à la bonté et pardonne l’iniquité. Ce verset révèle le cœur de Dieu : il n’est pas pressé de punir mais de faire grâce.",
+        "PSA_51_1": "David commence sa confession en appelant à la bonté et aux compassions de Dieu. Il ne marchande pas ; il s’appuie sur le caractère de Dieu, riche en grâce."
+      },
+      "hope": {
+        "ROM_15_13": "Paul conclut une section sur l’unité entre Juifs et païens en priant que le Dieu de l’espérance remplisse les croyants de joie et de paix. L’espérance n’est pas ici un optimisme naturel mais une confiance donnée par l’Esprit à mesure que nous nous confions en Dieu.",
+        "PSA_42_11": "Le psalmiste parle à son propre cœur au milieu de la dépression et de l’exil. Il ne fait pas semblant que tout va bien ; il se prêche l’espérance à lui‑même en s’appuyant sur qui est Dieu et sur la promesse d’une louange future.",
+        "LAM_3_22": "Au cœur des ruines de Jérusalem, le poète s’accroche à ce fil : les bontés de l’Éternel ne sont pas à bout. Même après le jugement, la fidélité de Dieu se renouvelle chaque matin.",
+        "HEB_10_23": "À une communauté fatiguée, l’auteur exhorte à retenir fermement la confession de l’espérance. L’ancre n’est pas la force de notre main, mais le caractère de Celui qui a promis et ne ment pas.",
+        "ROM_8_24": "Paul explique que l’espérance chrétienne ne porte pas sur ce qu’on voit déjà. Si l’on voyait tout maintenant, ce ne serait plus l’espérance : Dieu nous apprend à attendre en lui faisant confiance.",
+        "ROM_8_25": "Attendre fait mal, alors Paul décrit l’espérance comme une persévérance patiente. Ce n’est pas une résignation, mais tenir la promesse de Dieu tout en vivant le présent.",
+        "ROM_8_28": "Paul écrit à des croyants qui souffrent et affirme que Dieu agit encore pour le bien de ceux qui l’aiment. L’espérance n’est pas le déni de la douleur : c’est la confiance en la providence de Dieu.",
+        "ROM_15_4": "Paul dit que les Écritures ont été écrites pour donner endurance et encouragement afin que nous ayons l’espérance. Dieu se sert de ses promesses et de ses récits pour nous maintenir debout."
+      },
+      "weary": {
+        "MAT_11_28": "Jésus appelle à lui les fatigués et chargés pour leur donner du repos. C’est une invitation personnelle de quelqu’un qui voit le poids que nous portons et qui ne vient pas ajouter de la pression religieuse.",
+        "MAT_11_29": "Jésus n’offre pas une vie sans joug : il offre son joug, doux et humble, qui apprend aux cœurs fatigués une nouvelle manière de marcher. Le repos vient de marcher avec lui, pas de tout porter seul.",
+        "ISA_40_31": "Adressée à des exilés qui se sentent oubliés, cette promesse affirme que ceux qui se confient en l’Éternel renouvelleront leur force. Dieu ne se lasse pas et communique son endurance à ceux qui s’effondrent vers lui.",
+        "_2CO_12_9": "Quand Paul supplie Dieu d’ôter une faiblesse persistante, le Seigneur répond que sa grâce suffit et que sa puissance s’accomplit dans la faiblesse. Plutôt que de mépriser ses limites, Paul apprend à y rencontrer Christ.",
+        "PSA_62_5": "David ordonne à son âme de se reposer en Dieu seul. Entouré de menaces et d’instabilité, il choisit d’ancrer son attente non dans les résultats mais dans le salut stable de Dieu.",
+        "HEB_12_3": "L’auteur invite des croyants épuisés à considérer Jésus, qui a supporté l’opposition, afin de ne pas se lasser et perdre courage. La force vient en se souvenant de l’endurance de Christ.",
+        "GAL_6_9": "Paul encourage une communauté tentée de baisser les bras dans le bien. Il rappelle que la persévérance compte : Dieu voit la fidélité cachée et promet une moisson en son temps.",
+        "PSA_40_1": "David se souvient d’un long temps d’attente et témoigne que l’Éternel s’est penché pour l’entendre. Quand l’épuisement est lent et silencieux, Dieu écoute encore."
+      },
+      "joy": {
+        "PSA_16_11": "David lève les yeux au‑delà des détresses présentes vers la réalité de la présence de Dieu. Pour lui, la joie la plus profonde et les délices véritables se trouvent non dans les circonstances mais auprès de Dieu.",
+        "PSA_30_11": "Après avoir été délivré d’une situation proche de la mort, David décrit Dieu changeant ses lamentations en danse. Le deuil est réel, mais ce n’est pas le seul mot que Dieu peut prononcer sur une vie.",
+        "_1TH_5_18": "À une jeune Église sous pression, Paul encourage une reconnaissance constante — non parce que tout est bon, mais parce que Dieu agit en toutes choses. La joie et la gratitude deviennent des actes de confiance en sa volonté.",
+        "JAS_1_2": "Jacques surprend en demandant de regarder les épreuves comme un sujet de joie. Il ne romantise pas la souffrance ; il voit comment Dieu l’utilise pour forger une foi persévérante et mûre.",
+        "PSA_100_4": "Ce psaume invite à entrer dans la présence de Dieu avec reconnaissance et louange. La joie se pratique quand on se rappelle qui est Dieu et ce qu’il fait.",
+        "PSA_103_1": "David appelle son âme à bénir l’Éternel. Souvent, la joie commence par un souvenir volontaire : tourner son cœur vers Dieu quand les émotions tardent.",
+        "PSA_103_2": "David ajoute : n’oublie aucun de ses bienfaits. La gratitude réordonne l’esprit et fait place à une joie enracinée dans les dons de Dieu.",
+        "_2CO_9_15": "Paul conclut un enseignement sur la générosité par une adoration : le don de Dieu est inexprimable. La joie grandit quand nos yeux se lèvent de nos manques vers ce que Dieu a déjà donné en Christ."
+      }
+    }
+  },
   "chronology": {
     "title": "Chronologie biblique",
     "intro": "Les livres sont classés selon le moment où leur récit se situe dans l’histoire (pas selon l’ordre du sommaire d’une Bible imprimée). Job suit ainsi de près la Genèse, car son cadre évoque le monde patriarcal. Survolez ou mettez le focus sur une ligne pour un rappel des datations et hypothèses courantes en critique biblique.",
