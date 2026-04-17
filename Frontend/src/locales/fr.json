@@ -24,9 +24,19 @@
     "pickVerse": "Choisir un verset",
     "explore": "Explorer"
   },
+  "footer": {
+    "notice": "© 2026 ScriptureGraph > Conçu et maintenu par Hugo-Nathan Bele-Binda > Réalisé avec React, TypeScript et Vite > Alimenté par les données d'OpenBible.info & AO Lab Free Use Bible API"
+  },
   "home": {
-    "welcome": "Ouvrez le graphe ou la recherche dans la barre latérale pour aller à un verset.",
-    "apiHint": "Lancez l’API sur le port 3000 (npm run dev:api à la racine du dépôt)."
+    "heroTitle": "ScriptureGraph",
+    "scrollHint": "Faites défiler pour explorer",
+    "cardsSectionLabel": "Explorer l’application",
+    "cards": {
+      "chronological": "Parcourez les livres de la Bible dans un ordre narratif et historique, avec du contexte sur la place de chaque livre dans l’histoire.",
+      "compass": "Choisissez un thème comme la paix, le deuil ou l’espérance et lisez des versets choisis avec de brèves méditations pour votre cheminement.",
+      "atlas": "Reliez les Écritures à la géographie et au temps : cartes, lieux et couches qui ancrent le texte dans le monde antique.",
+      "graph": "Passez du livre au chapitre à la lecture, puis visualisez comment les versets se relient par les références croisées."
+    }
   },
   "books": {
     "GEN": "Genèse",

@@ -24,7 +24,8 @@ export type CompassTheme = {
 export const COMPASS_THEMES: CompassTheme[] = [
   {
     id: "peace",
-    colorClass: "bg-emerald-100",
+    colorClass:
+      "border border-stone-500/20 bg-[#c8d4cc] hover:bg-[#c2cfc6]",
     labelKey: "compass.card.peace.title",
     subtitleKey: "compass.card.peace.subtitle",
     verses: [
@@ -40,7 +41,8 @@ export const COMPASS_THEMES: CompassTheme[] = [
   },
   {
     id: "anxious",
-    colorClass: "bg-sky-100",
+    colorClass:
+      "border border-stone-500/20 bg-[#c4ced8] hover:bg-[#bec8d3]",
     labelKey: "compass.card.anxious.title",
     subtitleKey: "compass.card.anxious.subtitle",
     verses: [
@@ -56,7 +58,8 @@ export const COMPASS_THEMES: CompassTheme[] = [
   },
   {
     id: "lonely",
-    colorClass: "bg-cyan-100",
+    colorClass:
+      "border border-stone-500/20 bg-[#c2cfd4] hover:bg-[#bcc9cf]",
     labelKey: "compass.card.lonely.title",
     subtitleKey: "compass.card.lonely.subtitle",
     verses: [
@@ -72,7 +75,8 @@ export const COMPASS_THEMES: CompassTheme[] = [
   },
   {
     id: "grief",
-    colorClass: "bg-violet-100",
+    colorClass:
+      "border border-stone-500/20 bg-[#c8c5cf] hover:bg-[#c2bfc9]",
     labelKey: "compass.card.grief.title",
     subtitleKey: "compass.card.grief.subtitle",
     verses: [
@@ -88,7 +92,8 @@ export const COMPASS_THEMES: CompassTheme[] = [
   },
   {
     id: "guilt",
-    colorClass: "bg-amber-100",
+    colorClass:
+      "border border-stone-500/20 bg-[#cfc9c0] hover:bg-[#c9c3ba]",
     labelKey: "compass.card.guilt.title",
     subtitleKey: "compass.card.guilt.subtitle",
     verses: [
@@ -104,7 +109,8 @@ export const COMPASS_THEMES: CompassTheme[] = [
   },
   {
     id: "hope",
-    colorClass: "bg-lime-100",
+    colorClass:
+      "border border-stone-500/20 bg-[#c6cfc4] hover:bg-[#c0c9be]",
     labelKey: "compass.card.hope.title",
     subtitleKey: "compass.card.hope.subtitle",
     verses: [
@@ -120,7 +126,8 @@ export const COMPASS_THEMES: CompassTheme[] = [
   },
   {
     id: "weary",
-    colorClass: "bg-indigo-100",
+    colorClass:
+      "border border-stone-500/20 bg-[#c4c8d4] hover:bg-[#bec2ce]",
     labelKey: "compass.card.weary.title",
     subtitleKey: "compass.card.weary.subtitle",
     verses: [
@@ -136,7 +143,8 @@ export const COMPASS_THEMES: CompassTheme[] = [
   },
   {
     id: "joy",
-    colorClass: "bg-rose-100",
+    colorClass:
+      "border border-stone-500/20 bg-[#d0c7c6] hover:bg-[#cac1c0]",
     labelKey: "compass.card.joy.title",
     subtitleKey: "compass.card.joy.subtitle",
     verses: [

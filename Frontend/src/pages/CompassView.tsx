@@ -80,18 +80,20 @@ export function CompassView() {
                   setVerseText(null);
                   setVerseError(null);
                 }}
-                className={`flex h-full flex-col justify-between rounded-2xl border border-sage-primary/35 ${theme.colorClass} p-4 text-left shadow-sm ring-0 transition hover:shadow-md hover:border-sage-primary/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sage-forest focus-visible:ring-offset-sage-bg ${
-                  isActive ? "scale-[1.02]" : ""
+                className={`flex h-full flex-col justify-between rounded-2xl p-4 text-left shadow-sm ring-0 transition hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sage-forest focus-visible:ring-offset-sage-bg ${theme.colorClass} ${
+                  isActive
+                    ? "ring-1 ring-sage-forest/30 ring-offset-2 ring-offset-sage-bg"
+                    : ""
                 }`}
               >
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-sage-dark/80 drop-shadow-sm">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-sage-dark/75">
                     {t("nav.compass")}
                   </p>
-                  <h3 className="mt-2 text-sm font-semibold text-sage-dark drop-shadow-sm">
+                  <h3 className="mt-2 text-sm font-semibold text-sage-dark">
                     {t(theme.labelKey)}
                   </h3>
-                  <p className="mt-1 text-xs text-sage-dark/90 drop-shadow-sm">
+                  <p className="mt-1 text-xs text-sage-dark/85">
                     {t(theme.subtitleKey)}
                   </p>
                 </div>
@@ -103,7 +105,7 @@ export function CompassView() {
 
       <section
         aria-label="Compass verses"
-        className="mt-4 rounded-2xl border border-sage-primary/40 bg-white/80 p-4 shadow-sm sm:mt-8"
+        className="mt-4 rounded-2xl border border-sage-primary/35 bg-white/95 p-4 shadow-sm sm:mt-8"
       >
         {activeTheme ? (
           <div className="flex h-full flex-col gap-4 sm:flex-row">

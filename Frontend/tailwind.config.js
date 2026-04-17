@@ -6,6 +6,7 @@ export default {
       colors: {
         sage: {
           bg: "#E8EFE8",
+          footer: "#eef4ef",
           primary: "#A3B18A",
           forest: "#588157",
           dark: "#344E41",
