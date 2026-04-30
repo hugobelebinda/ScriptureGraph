@@ -2,6 +2,8 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
 export default defineConfig({
+  // Read env vars from repo root (.env), not only Frontend/.env
+  envDir: "..",
   plugins: [react()],
   server: {
     port: 5173,

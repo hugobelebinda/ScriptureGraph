@@ -1,0 +1,64 @@
+# docker-compose.yml
+#
+# Wraps the existing scripture-db Postgres 18 container without losing data.
+# The pgdata lives in the EXTERNAL volume `scripture-data` (already populated
+# with 615k+ ScriptureGraph rows) and is reused as-is here.
+#
+# Migration steps (one-time):
+#   1. docker stop scripture-db && docker rm scripture-db
+#      (the `scripture-data` volume keeps all data — nothing is dropped)
+#   2. docker compose up -d
+#      (compose recreates the db container, mounting the same external volume)
+#
+# After that, every restart is just `docker compose up -d` / `down`.
+
+services:
+  db:
+    image: postgres:18
+    container_name: scripture-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: scripturegraph
+      # PGDATA must match the existing container so the volume layout is preserved.
+      PGDATA: /var/lib/postgresql/18/docker
+    ports:
+      - "5433:5432"
+    volumes:
+      - scripture-data:/var/lib/postgresql
+    networks:
+      - scripturegraph-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d scripturegraph"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: scripture-api
+    restart: unless-stopped
+    environment:
+      # Inside the compose network, db is reachable as `db:5432`.
+      DATABASE_URL: ${DATABASE_URL}
+      PORT: "3000"
+      NODE_ENV: production
+      FRONTEND_ORIGIN: http://localhost:5173
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - scripturegraph-net
+
+volumes:
+  scripture-data:
+    external: true
+
+networks:
+  scripturegraph-net:
+    driver: bridge

@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "download-bible": "tsx scripts/download-bible.ts",
+    "build:atlas-mosaic": "tsx scripts/build-atlas-mosaic.ts",
     "generate:book-covers": "node scripts/generate-book-cover-svgs.mjs",
     "dev:api": "npm run dev -w scripturegraph-backend",
     "dev:web": "npm run dev -w scripturegraph-frontend",

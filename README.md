@@ -1,58 +1,234 @@
 # ScriptureGraph
 
-Bilingual Bible visualization (EN/FR): graph navigation, cross-references, atlas, and compass-style discovery.
+Bilingual Bible exploration app (EN/FR) combining:
+- chapter reading,
+- cross-reference graph primitives,
+- chronological timeline,
+- emotional compass,
+- historical atlas with timeline and map overlays.
 
-## Milestone: data layer and design tokens
+This README is the **current implementation snapshot** so a new agent can pick up work with full context.
 
-### PostgreSQL + Prisma
+---
 
-- **Connection:** set `DATABASE_URL` in `.env` (see manifest; default port `5433`).
-- **Schema:** `Backend/prisma/schema.prisma` — `Verse` (`uid` PK, `text_en`, `text_fr`, `book_name_en`, `book_name_fr`), `CrossReference` (`source_uid`, `target_uid`, `weight`, unique pair).
-- **Migrate:** from `Backend/`: `export $(grep -v '^#' ../.env | xargs) && npx prisma migrate deploy`
-- **Seed:** `npm run seed` in `Backend/` (loads root `.env` via `src/loadEnv.ts`).
+## 1) Monorepo Structure
 
-### Seed verification (last run)
+- Root workspace: `scripturegraph`
+- Packages:
+  - `Backend` (`scripturegraph-backend`): Express + Prisma + seed pipeline
+  - `Frontend` (`scripturegraph-frontend`): Vite + React + Tailwind + i18next + Mapbox
+- Raw data directory (expected): `data-raw/`
+  - `bible-en/` and `bible-fr/` chapter JSON files
+  - `cross_references.txt`
 
-| Table              | Rows    |
-|--------------------|---------|
-| `Verse`            | 31,103  |
-| `CrossReference`   | 614,043 |
+---
 
-Verses are merged from `data-raw/bible-en` and `data-raw/bible-fr` for the **66-book** Protestant canon (USFM folder names). Cross-references are read from `data-raw/cross_references.txt` with a **line stream**, OpenBible abbreviations normalized to UIDs (`JHN.3.16`), ranges expanded, and bulk `createMany` in **transactions of 2,000** rows.
+## 2) Scripts
 
-### Tailwind (Sage)
+From repo root:
 
-`Frontend/tailwind.config.js` defines `sage.bg`, `sage.primary`, `sage.forest`, `sage.dark` for classes such as `bg-sage-bg`, `text-sage-dark`, `bg-sage-forest`.
+- `npm run dev:api` — start backend (`tsx watch src/server.ts`)
+- `npm run dev:web` — start frontend (Vite)
+- `npm run download-bible` — pull Bible JSON files from HelloAO API
+- `npm run generate:book-covers` — generate `Frontend/public/books/*.svg`
 
-### HTTP API (Express)
+Backend-specific:
 
-Run from repo root: `npm run dev:api` (or `npm run dev` in `Backend/`). Loads `.env` from the repo root (`PORT`, `DATABASE_URL`, optional `FRONTEND_ORIGIN`).
+- `npm run seed -w scripturegraph-backend` — seed verses + cross references
+- `npm run prisma:migrate -w scripturegraph-backend`
+- `npm run db:push -w scripturegraph-backend`
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/api/health` | Liveness check |
-| GET | `/api/verses/:book/:chapter?lang=en` | Chapter verses; `lang=en` or `fr` selects `text` / `book_name` (both `text_en` / `text_fr` always included) |
-| GET | `/api/connections/:verse_uid?lang=en` | Cross-references from `source_uid` (up to 500, by weight desc); optional target `text` / `book_name` for `lang` |
+Frontend-specific:
 
-`verse_uid` is a single path segment, e.g. `/api/connections/JHN.3.16`. **CORS** allows `FRONTEND_ORIGIN` (default `http://localhost:5173`).
+- `npm run build -w scripturegraph-frontend`
+- `npm run preview -w scripturegraph-frontend`
 
-### Frontend (Vite + React)
+---
 
-From repo root: **`npm run dev:web`** (or `npm run dev` in `Frontend/`). Defaults to [http://localhost:5173](http://localhost:5173) with **`/api` proxied** to `http://localhost:3000` — run **`npm run dev:api`** in another terminal.
+## 3) Environment Variables
 
-- **i18next** — `src/locales/en.json` / `fr.json`, init in `src/i18n/config.ts`, language persisted as `scripturegraph_lang`.
-- **Zustand** — `useAppStore` holds `uiLang` (kept in sync with i18n via **LanguageToggle** in the sidebar).
-- **`useBibleData`** — `fetchChapter` / `fetchConnections` call the Express API with **`?lang=`** from `uiLang`.
-- **Sidebar** — nav routes + language toggle + **HierarchicalSearch** (book → chapter → verse using canonical metadata + live verse list from the API).
+Root `.env` currently used for both backend and frontend:
 
-### Next steps
+- `DATABASE_URL` (PostgreSQL)
+- `PORT` (backend, default 3000)
+- `NODE_ENV`
+- `VITE_MAPBOX_TOKEN` (frontend map token)
 
-- `GraphView` four-level flow, Connection Rail, Cytoscape modal, verse destination modal from search
-- Mapbox atlas, compass cards, chronological data
+Important frontend note:
+- `Frontend/vite.config.ts` sets `envDir: ".."`, so Vite reads env from repo root.
 
-## Core architecture
+---
 
-- **Language:** TypeScript (strict)
-- **Locale:** Bilingual (EN/FR) via i18next
-- **UI:** Sage palette (`#E8EFE8`, `#A3B18A`, `#588157`, `#344E41`)
-- **Graph:** 4-level drill-down (books → chapters → reading + connection rail → chapter graph)
+## 4) Backend Status
+
+### 4.1 Prisma schema
+
+`Backend/prisma/schema.prisma`:
+- `Verse`
+  - `uid` (PK, `BOOK.CH.VS` format)
+  - `text_en`, `text_fr`
+  - `book_name_en`, `book_name_fr`
+- `CrossReference`
+  - `id` (auto)
+  - `source_uid`, `target_uid`, `weight`
+  - unique pair index + source/target indexes
+
+### 4.2 Seed pipeline (`Backend/src/seed.ts`)
+
+Implemented:
+- bilingual merge of EN/FR chapter files
+- robust verse text flattening from nested content pieces
+- UID normalization (`JHN.3.16` format)
+- streamed parsing of `cross_references.txt`
+- OpenBible-style reference parsing + ranges
+- batch inserts with Prisma transactions (2,000 rows)
+- idempotent behavior via truncation before reseed
+
+### 4.3 API routes (`Backend/src/server.ts`)
+
+- `GET /api/health`
+- `GET /api/verses/:book/:chapter?lang=en|fr`
+- `GET /api/connections/:verse_uid?lang=en|fr`
+
+Behavior:
+- `lang` controls returned `text` and `book_name`
+- both `text_en` and `text_fr` remain available in payload
+- connections sorted by weight desc (cap 500)
+
+### 4.4 Known runtime gotcha
+
+If backend fails with `EADDRINUSE :::3000`, another process already occupies port 3000.
+
+---
+
+## 5) Frontend Status
+
+### 5.1 Global stack
+
+- React 19 + TypeScript strict
+- React Router
+- Zustand (`useAppStore` for UI language)
+- i18next (`Frontend/src/i18n/config.ts`)
+- Tailwind with Sage palette (`sage.bg`, `sage.primary`, `sage.forest`, `sage.dark`, `sage.footer`)
+
+### 5.2 App shell
+
+- Sidebar navigation + language toggle + hierarchical search
+- Global `ScrollToTop` on route changes
+- Global footer (`Frontend/src/components/Footer.tsx`) with pale sage background and bilingual notice
+
+### 5.3 Home page
+
+Implemented in `Frontend/src/pages/Home.tsx`:
+- hero video background: `Frontend/public/scriptureGraph_Home.mp4`
+- centered title (`ScriptureGraph`)
+- 4 large feature cards (Chronological, Compass, Atlas, Graph)
+- custom card imagery from `Frontend/public/home/*.png`
+- responsive card spacing/size tuned iteratively
+
+### 5.4 Chronological page
+
+Implemented in `Frontend/src/pages/ChronologicalView.tsx`:
+- historical narrative order sections (not canonical order)
+- hover/focus tooltip with scholarly notes
+- larger tooltip style + generated book cover visuals
+
+### 5.5 Emotional Compass page
+
+Implemented in `Frontend/src/pages/CompassView.tsx` + `src/data/compassThemes.ts`:
+- emotion cards with muted palette
+- verse list per theme
+- click verse -> load chapter -> extract verse text
+- localized explanatory summary
+- cache bypass retry path for stale chapter cache cases
+
+---
+
+## 6) Atlas (Current State)
+
+`Frontend/src/pages/AtlasView.tsx` + `Frontend/src/data/atlasData.ts`
+
+### 6.1 What is implemented
+
+- Mapbox map with year slider (`-1500` to `100`, default `-900`)
+- Timeline-driven overlay filtering for empires/territories
+- Glowing outline style for historical boundaries
+- Region click -> right slide-in detail panel
+- Book writing-location stars:
+  - one star per place (not one per book)
+  - stars remain visible independent of slider
+  - click star -> panel shows books at place, then book-specific author/time/place/context
+
+### 6.2 Geospatial sources currently used
+
+Local files under `Frontend/public/atlas/geojson/` include:
+- `persian_empire.geojson`
+- `alexanders_empire.geojson`
+- `roman_empire_bce_60.geojson`
+- `roman_empire_ce_117_extent.geojson`
+- `hasmonean_kingdom.geojson`
+- `herods_kingdom.geojson`
+- `egypt_bc1500.geojson`
+- `assyria_bc700.geojson`
+- `babylonia_bc700.geojson`
+- `twelve_tribes.geojson` (converted from KMZ)
+
+### 6.3 Atlas logic status note
+
+Empire outline logic was recently restarted/refactored and remains an active iteration area.
+Book star behavior is currently considered stable by user preference and should be preserved unless explicitly requested.
+
+---
+
+## 7) Graph View Status
+
+`Frontend/src/pages/GraphView.tsx` is still placeholder-level:
+- reads selected `book` from URL query
+- displays queued localized book
+- full 4-level graph flow + Cytoscape still pending
+
+---
+
+## 8) Data & i18n Files of Interest
+
+- `Frontend/src/locales/en.json`
+- `Frontend/src/locales/fr.json`
+- `Frontend/src/locales/chronology-tooltips.en.json`
+- `Frontend/src/locales/chronology-tooltips.fr.json`
+
+They now contain substantial UI + feature text, including:
+- compass summaries,
+- atlas layer labels/scope/history,
+- footer notice,
+- chronology copy.
+
+---
+
+## 9) Key Known Limitations / TODO
+
+1. **Graph feature completion**
+   - chapter reading rail + graph modal not complete
+2. **Atlas border fidelity**
+   - ongoing refinement of historical boundary precision across full timeline
+3. **Destination modal from sidebar search**
+   - not implemented yet
+4. **Potential frontend bundle size optimization**
+   - Atlas/Mapbox increases bundle; dynamic route/code splitting is a candidate
+
+---
+
+## 10) Quick Start
+
+1. Install deps:
+   - `npm install`
+2. Ensure `.env` has valid:
+   - `DATABASE_URL`
+   - `PORT=3000`
+   - `VITE_MAPBOX_TOKEN=pk....`
+3. Start backend:
+   - `npm run dev:api`
+4. Start frontend:
+   - `npm run dev:web`
+5. Open:
+   - `http://localhost:5173`
+
