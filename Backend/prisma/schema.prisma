@@ -22,6 +22,7 @@ model CrossReference {
   weight     Int
 
   @@unique([source_uid, target_uid])
+  @@index([source_uid, target_uid])
   @@index([source_uid])
   @@index([target_uid])
 }

@@ -107,7 +107,22 @@
     "REV": "Apocalypse"
   },
   "graph": {
-    "pendingBook": "Livre présélectionné : {{book}} ({{code}}) — l’interface graphe arrive ensuite."
+    "pendingBook": "Livre présélectionné : {{book}} ({{code}}) — l’interface graphe arrive ensuite.",
+    "enterPrompt": "Entrez un verset pour voir ses références.",
+    "entryPlaceholder": "JHN.3.16 ou JHN 3:16",
+    "buildButton": "Générer le graphe",
+    "formatHint": "Utilisez le format JHN.3.16 ou JHN 3:16",
+    "meta": "Verset actuel : {{uid}}",
+    "loading": "Chargement...",
+    "nodesCount": "{{count}} nœuds",
+    "edgesCount": "{{count}} liens",
+    "searchLabel": "Rechercher un verset",
+    "noVerses": "Aucun verset trouvé pour ce nœud central.",
+    "loadFailed": "Échec du chargement du graphe",
+    "tierCore": "Liens Directs",
+    "tierStrong": "Liens Forts",
+    "tierAll": "Tous",
+    "allDoesNotExpandGraph": "La liste complète des références croisées est affichée uniquement dans le panneau défilant (le graphe reste sur Liens Directs/Liens Forts)."
   },
   "atlas": {
     "intro": "Déplacez-vous dans le temps pour voir les zones d’influence des grands empires et les lieux probables de rédaction de certains livres bibliques.",
@@ -344,8 +359,22 @@
   },
   "chronology": {
     "title": "Chronologie biblique",
+    "biblicalOrder": "Ordre biblique",
+    "chronologicalOrder": "Ordre chronologique",
+    "biblicalSections": {
+      "pentateuch": "Pentateuque",
+      "historical": "Livres historiques",
+      "wisdom": "Sagesse et poésie",
+      "majorProphets": "Grands prophètes",
+      "minorProphets": "Petits prophètes",
+      "gospels": "Évangiles",
+      "acts": "Actes",
+      "paulineEpistles": "Épîtres pauliniennes",
+      "generalEpistles": "Épîtres générales",
+      "apocalypse": "Apocalypse"
+    },
     "intro": "Les livres sont classés selon le moment où leur récit se situe dans l’histoire (pas selon l’ordre du sommaire d’une Bible imprimée). Job suit ainsi de près la Genèse, car son cadre évoque le monde patriarcal. Survolez ou mettez le focus sur une ligne pour un rappel des datations et hypothèses courantes en critique biblique.",
-    "disclaimer": "Les dates et paternités sont débattues ; les textes résument des introductions critiques usuelles, pas un consensus unique. Ouvrir un livre le met en file dans le graphe lorsque cette vue sera prête.",
+    "disclaimer": "Les dates et paternités sont débattues ; les textes résument des introductions critiques usuelles, pas un consensus unique.",
     "tooltipFallback": "Pas encore de résumé pour ce code.",
     "era": {
       "patriarchs": "Patriarches et cadre sapiential ancien",

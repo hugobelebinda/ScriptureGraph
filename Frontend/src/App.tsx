@@ -10,14 +10,14 @@ import { Home } from "./pages/Home";
 
 export default function App() {
   const { pathname } = useLocation();
-  const isHome = pathname === "/";
+  const isFullBleed = pathname === "/" || pathname === "/graph";
 
   return (
     <div className="flex min-h-screen flex-col">
       <ScrollToTop />
       <div className="flex min-h-0 flex-1">
         <Sidebar />
-        <main className={`min-w-0 flex-1 ${isHome ? "" : "p-6"}`}>
+        <main className={`min-w-0 flex-1 ${isFullBleed ? "" : "p-6"}`}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/graph" element={<GraphView />} />

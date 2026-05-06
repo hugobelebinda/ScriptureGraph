@@ -5,9 +5,10 @@ import { useBibleData } from "../hooks/useBibleData";
 
 type Props = {
   onSelectVerse?: (uid: string) => void;
+  initialBook?: string | null;
 };
 
-export function HierarchicalSearch({ onSelectVerse }: Props) {
+export function HierarchicalSearch({ onSelectVerse, initialBook }: Props) {
   const { t } = useTranslation();
   const { lang, fetchChapter } = useBibleData();
   const [book, setBook] = useState("");
@@ -21,6 +22,12 @@ export function HierarchicalSearch({ onSelectVerse }: Props) {
     () => (maxCh ? Array.from({ length: maxCh }, (_, i) => i + 1) : []),
     [maxCh],
   );
+
+  useEffect(() => {
+    const normalized = (initialBook ?? "").trim().toUpperCase();
+    if (!normalized || !BOOK_ORDER.includes(normalized as (typeof BOOK_ORDER)[number])) return;
+    setBook(normalized);
+  }, [initialBook]);
 
   useEffect(() => {
     setChapter("");

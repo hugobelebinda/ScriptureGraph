@@ -107,7 +107,22 @@
     "REV": "Revelation"
   },
   "graph": {
-    "pendingBook": "Queued book: {{book}} ({{code}}) — full graph UI coming next."
+    "pendingBook": "Queued book: {{book}} ({{code}}) — full graph UI coming next.",
+    "enterPrompt": "Enter a verse to view its cross-references.",
+    "entryPlaceholder": "JHN.3.16 or JHN 3:16",
+    "buildButton": "Build graph",
+    "formatHint": "Use format like JHN.3.16 or JHN 3:16",
+    "meta": "Current verse: {{uid}}",
+    "loading": "Loading...",
+    "nodesCount": "{{count}} nodes",
+    "edgesCount": "{{count}} edges",
+    "searchLabel": "Search verse",
+    "noVerses": "No verses found for this center node.",
+    "loadFailed": "Graph load failed",
+    "tierCore": "Direct Links",
+    "tierStrong": "Strong Links",
+    "tierAll": "All",
+    "allDoesNotExpandGraph": "Full cross-reference list is shown in the scrolling pane only (graph stays on Direct/Strong selection)."
   },
   "atlas": {
     "intro": "Move through time to see major empire influence zones and probable authorship locations for selected biblical books.",
@@ -344,8 +359,22 @@
   },
   "chronology": {
     "title": "Biblical timeline",
+    "biblicalOrder": "Biblical order",
+    "chronologicalOrder": "Chronological order",
+    "biblicalSections": {
+      "pentateuch": "Pentateuch",
+      "historical": "Historical Books",
+      "wisdom": "Wisdom & Poetry",
+      "majorProphets": "Major Prophets",
+      "minorProphets": "Minor Prophets",
+      "gospels": "Gospels",
+      "acts": "Acts",
+      "paulineEpistles": "Pauline Epistles",
+      "generalEpistles": "General Epistles",
+      "apocalypse": "Apocalypse"
+    },
     "intro": "Books are ordered by when their story mainly happens in history (not by the table of contents in a printed Bible). For example, Job comes soon after Genesis because its setting belongs to the patriarchal world. Hover or focus a row for mainstream scholarly notes on dating and composition.",
-    "disclaimer": "Dates and authorship are contested; summaries reflect common critical introductions, not unanimous consensus. Open a book to queue it in the graph when that view is ready.",
+    "disclaimer": "Dates and authorship are contested; summaries reflect common critical introductions, not unanimous consensus.",
     "tooltipFallback": "No scholarly summary is available for this code yet.",
     "era": {
       "patriarchs": "Patriarchs & early wisdom setting",

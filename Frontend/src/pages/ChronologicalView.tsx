@@ -2,10 +2,23 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { BookCoverImage } from "../components/BookCoverImage";
+import { BOOK_ORDER } from "../data/canonicalBooks";
 import { CHRONOLOGY_SECTIONS } from "../data/chronologicalBooks";
 
 const SHOW_DELAY_MS = 280;
 const HIDE_DELAY_MS = 120;
+const BIBLICAL_ORDER_SECTIONS = [
+  { key: "pentateuch", books: ["GEN", "EXO", "LEV", "NUM", "DEU"] },
+  { key: "historical", books: ["JOS", "JDG", "RUT", "1SA", "2SA", "1KI", "2KI", "1CH", "2CH", "EZR", "NEH", "EST"] },
+  { key: "wisdom", books: ["JOB", "PSA", "PRO", "ECC", "SNG"] },
+  { key: "majorProphets", books: ["ISA", "JER", "LAM", "EZK", "DAN"] },
+  { key: "minorProphets", books: ["HOS", "JOL", "AMO", "OBA", "JON", "MIC", "NAM", "HAB", "ZEP", "HAG", "ZEC", "MAL"] },
+  { key: "gospels", books: ["MAT", "MRK", "LUK", "JHN"] },
+  { key: "acts", books: ["ACT"] },
+  { key: "paulineEpistles", books: ["ROM", "1CO", "2CO", "GAL", "EPH", "PHP", "COL", "1TH", "2TH", "1TI", "2TI", "TIT", "PHM"] },
+  { key: "generalEpistles", books: ["HEB", "JAS", "1PE", "2PE", "1JN", "2JN", "3JN", "JUD"] },
+  { key: "apocalypse", books: ["REV"] },
+] as const;
 
 function TimelineBookRow({
   usfm,
@@ -109,6 +122,20 @@ function TimelineBookRow({
 export function ChronologicalView() {
   const { t } = useTranslation();
 
+  const biblicalSectionsWithPos = useMemo(() => {
+    let p = 0;
+    const canonicalSet = new Set(BOOK_ORDER);
+    return BIBLICAL_ORDER_SECTIONS.map((section) => ({
+      key: section.key,
+      books: section.books
+        .filter((usfm) => canonicalSet.has(usfm))
+        .map((usfm) => {
+          p += 1;
+          return { usfm, position: p };
+        }),
+    })).filter((section) => section.books.length > 0);
+  }, []);
+
   const sectionsWithPos = useMemo(() => {
     let p = 0;
     return CHRONOLOGY_SECTIONS.map((section) => ({
@@ -121,7 +148,7 @@ export function ChronologicalView() {
   }, []);
 
   return (
-    <div className="mx-auto max-w-2xl pb-16">
+    <div className="mx-auto max-w-7xl pb-16">
       <header className="mb-8 border-b border-sage-primary/30 pb-6">
         <h1 className="text-3xl font-bold tracking-tight text-sage-dark">
           {t("chronology.title")}
@@ -131,22 +158,52 @@ export function ChronologicalView() {
         </p>
       </header>
 
-      <div className="space-y-12">
-        {sectionsWithPos.map((section) => (
-          <section key={section.eraKey} aria-labelledby={`era-${section.eraKey}`}>
-            <h2
-              id={`era-${section.eraKey}`}
-              className="mb-4 text-lg font-semibold text-sage-forest"
-            >
-              {t(`chronology.era.${section.eraKey}`)}
-            </h2>
-            <ol className="space-y-2 border-l-2 border-sage-primary/50 pl-4">
-              {section.books.map(({ usfm, position }) => (
-                <TimelineBookRow key={usfm} usfm={usfm} position={position} />
-              ))}
-            </ol>
-          </section>
-        ))}
+      <div className="grid gap-10 lg:grid-cols-2">
+        <section aria-labelledby="biblical-order">
+          <h2 id="biblical-order" className="mb-4 text-lg font-semibold text-sage-forest">
+            {t("chronology.biblicalOrder")}
+          </h2>
+          <div className="space-y-10">
+            {biblicalSectionsWithPos.map((section) => (
+              <section key={section.key} aria-labelledby={`bib-section-${section.key}`}>
+                <h3
+                  id={`bib-section-${section.key}`}
+                  className="mb-4 text-base font-semibold text-sage-forest/90"
+                >
+                  {t(`chronology.biblicalSections.${section.key}`)}
+                </h3>
+                <ol className="space-y-2 border-l-2 border-sage-primary/50 pl-4">
+                  {section.books.map(({ usfm, position }) => (
+                    <TimelineBookRow key={`bib-${usfm}`} usfm={usfm} position={position} />
+                  ))}
+                </ol>
+              </section>
+            ))}
+          </div>
+        </section>
+
+        <section aria-labelledby="chronological-order">
+          <h2 id="chronological-order" className="mb-4 text-lg font-semibold text-sage-forest">
+            {t("chronology.chronologicalOrder")}
+          </h2>
+          <div className="space-y-12">
+            {sectionsWithPos.map((section) => (
+              <section key={section.eraKey} aria-labelledby={`era-${section.eraKey}`}>
+                <h3
+                  id={`era-${section.eraKey}`}
+                  className="mb-4 text-base font-semibold text-sage-forest/90"
+                >
+                  {t(`chronology.era.${section.eraKey}`)}
+                </h3>
+                <ol className="space-y-2 border-l-2 border-sage-primary/50 pl-4">
+                  {section.books.map(({ usfm, position }) => (
+                    <TimelineBookRow key={usfm} usfm={usfm} position={position} />
+                  ))}
+                </ol>
+              </section>
+            ))}
+          </div>
+        </section>
       </div>
 
       <p className="mt-10 text-xs text-sage-dark/60">{t("chronology.disclaimer")}</p>
