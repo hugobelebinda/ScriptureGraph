@@ -420,7 +420,18 @@ async function start() {
   });
 }
 
-start().catch((error) => {
-  console.error("Failed to start API:", error);
-  process.exit(1);
-});
+const isServerlessRuntime = process.env.VERCEL === "1" || process.env.VERCEL === "true";
+
+if (!isServerlessRuntime) {
+  start().catch((error) => {
+    console.error("Failed to start API:", error);
+    process.exit(1);
+  });
+} else {
+  ensureCrossReferenceCompositeIndex().catch((error) => {
+    // In serverless mode, don't crash process on cold-start setup checks.
+    console.error("Index check failed during serverless boot:", error);
+  });
+}
+
+export default app;
