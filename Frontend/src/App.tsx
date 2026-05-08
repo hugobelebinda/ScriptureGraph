@@ -28,6 +28,21 @@ export default function App() {
         </main>
       </div>
       <Footer />
+      <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/50 px-6 text-center lg:hidden">
+        <div
+          className="max-w-xl rounded-2xl px-5 py-4 shadow-2xl"
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.62)" }}
+        >
+          <p className="text-sm leading-relaxed text-white sm:text-base">
+            Pour une expérience optimale, veuillez consulter ViaScripture sur un ordinateur. Une version
+            mobile sera bientôt disponible.
+            <br />
+            <br />
+            For the best experience, please view ViaScripture on a desktop browser. Mobile-friendly
+            version will be coming soon.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
