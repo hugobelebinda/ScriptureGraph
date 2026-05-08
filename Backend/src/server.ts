@@ -2,7 +2,14 @@ import "./loadEnv.js";
 import { Prisma } from "@prisma/client";
 import cors from "cors";
 import express, { type Request, type Response } from "express";
+import rateLimit from "express-rate-limit";
 import { prisma } from "./db.js";
+import {
+  langQuerySchema,
+  uidParamSchema,
+  verseIdParamSchema,
+  versesParamsSchema,
+} from "./schemas/apiSchemas.js";
 
 type VerseRow = {
   uid: string;
@@ -58,17 +65,31 @@ const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN ?? "http://localhost:5173";
 
+const generalLimiter = rateLimit({
+  windowMs: 60_000,
+  max: 180,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Too many requests, please slow down." },
+});
+
+const heavyReadLimiter = rateLimit({
+  windowMs: 60_000,
+  max: 40,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Too many graph queries, please retry in a moment." },
+});
+
 app.use(
   cors({
     origin: FRONTEND_ORIGIN,
     credentials: true,
+    methods: ["GET", "HEAD"],
   }),
 );
 app.use(express.json());
-
-function parseLang(q: unknown): "en" | "fr" {
-  return q === "fr" ? "fr" : "en";
-}
+app.use(generalLimiter);
 
 function normalizeBook(book: string): string {
   return book.trim().toUpperCase();
@@ -179,14 +200,14 @@ app.get("/api/health", (_req: Request, res: Response) => {
 });
 
 app.get("/api/verses/:book/:chapter", async (req: Request, res: Response) => {
-  const book = normalizeBook(req.params.book ?? "");
-  const chapter = parseInt(req.params.chapter ?? "", 10);
-  const lang = parseLang(req.query.lang);
-
-  if (!book || !Number.isFinite(chapter) || chapter < 1) {
+  const parsedParams = versesParamsSchema.safeParse(req.params);
+  const parsedQuery = langQuerySchema.safeParse(req.query);
+  if (!parsedParams.success || !parsedQuery.success) {
     res.status(400).json({ error: "Invalid book or chapter" });
     return;
   }
+  const { book, chapter } = parsedParams.data;
+  const lang = parsedQuery.data.lang ?? "en";
 
   try {
     const rows = await prisma.verse.findMany({
@@ -216,16 +237,15 @@ app.get("/api/verses/:book/:chapter", async (req: Request, res: Response) => {
 
 const CONNECTIONS_LIMIT = 500;
 
-app.get("/api/connections/:verse_uid", async (req: Request, res: Response) => {
-  const source_uid = req.params.verse_uid ?? "";
-  const lang = parseLang(req.query.lang);
-
-  if (!source_uid || !isUid(source_uid)) {
+app.get("/api/connections/:verse_uid", heavyReadLimiter, async (req: Request, res: Response) => {
+  const parsedParams = uidParamSchema.safeParse(req.params);
+  const parsedQuery = langQuerySchema.safeParse(req.query);
+  if (!parsedParams.success || !parsedQuery.success) {
     res.status(400).json({ error: "Invalid verse_uid (expected e.g. JHN.3.16)" });
     return;
   }
-
-  const normalized = normalizeVerseUid(source_uid);
+  const lang = parsedQuery.data.lang ?? "en";
+  const normalized = parsedParams.data.verse_uid;
 
   try {
     const links = await prisma.crossReference.findMany({
@@ -262,15 +282,15 @@ app.get("/api/connections/:verse_uid", async (req: Request, res: Response) => {
   }
 });
 
-app.get("/api/cross-references/:verseId", async (req: Request, res: Response) => {
-  const verseId = req.params.verseId ?? "";
-  const lang = parseLang(req.query.lang);
-  if (!verseId || !isUid(verseId)) {
+app.get("/api/cross-references/:verseId", heavyReadLimiter, async (req: Request, res: Response) => {
+  const parsedParams = verseIdParamSchema.safeParse(req.params);
+  const parsedQuery = langQuerySchema.safeParse(req.query);
+  if (!parsedParams.success || !parsedQuery.success) {
     res.status(400).json({ error: "Invalid verseId (expected e.g. JHN.3.16)" });
     return;
   }
-
-  const centerUid = normalizeVerseUid(verseId);
+  const lang = parsedQuery.data.lang ?? "en";
+  const centerUid = parsedParams.data.verseId;
 
   try {
     const edgeRows = await prisma.$queryRaw<EdgeRow[]>(Prisma.sql`
