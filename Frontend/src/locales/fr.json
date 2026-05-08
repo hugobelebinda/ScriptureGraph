@@ -7,7 +7,7 @@
     "chronological": "Chronologie"
   },
   "sidebar": {
-    "title": "ScriptureGraph",
+    "title": "ViaScripture",
     "search": "Recherche"
   },
   "language": {
@@ -25,10 +25,12 @@
     "explore": "Explorer"
   },
   "footer": {
-    "notice": "© 2026 ScriptureGraph > Conçu et maintenu par Hugo-Nathan Bele-Binda > Réalisé avec React, TypeScript et Vite > Alimenté par les données d'OpenBible.info & AO Lab Free Use Bible API"
+    "notice": "© 2026 ViaScripture > Conçu et maintenu par Hugo-Nathan Bele-Binda > Réalisé avec React, TypeScript et Vite > Versions bibliques : anglais WEB (World English Bible), français LSG (Louis Segond) > Alimenté par les données d'OpenBible.info & AO Lab Free Use Bible API"
   },
   "home": {
-    "heroTitle": "ScriptureGraph",
+    "heroTitle": "ViaScripture",
+    "mottoRef": "Jean 14:6",
+    "mottoText": "« Je suis le chemin, la vérité, et la vie. Nul ne vient au Père que par moi. »",
     "scrollHint": "Faites défiler pour explorer",
     "cardsSectionLabel": "Explorer l’application",
     "cards": {
@@ -122,7 +124,8 @@
     "tierCore": "Liens Directs",
     "tierStrong": "Liens Forts",
     "tierAll": "Tous",
-    "allDoesNotExpandGraph": "La liste complète des références croisées est affichée uniquement dans le panneau défilant (le graphe reste sur Liens Directs/Liens Forts)."
+    "allDoesNotExpandGraph": "La liste complète des références croisées est affichée uniquement dans le panneau défilant (le graphe reste sur Liens Directs/Liens Forts).",
+    "lsgVerseMergeNotice": "Note : dans la Louis Segond (LSG), certains versets peuvent être regroupés sous une même numérotation. Exemple : Psaume 22:1 et Psaume 22:2 peuvent apparaître ensemble sous Psaume 22:1."
   },
   "atlas": {
     "intro": "Déplacez-vous dans le temps pour voir les zones d’influence des grands empires et les lieux probables de rédaction de certains livres bibliques.",
@@ -196,6 +199,7 @@
       "REV": "L’Apocalypse situe Jean à Patmos sous la domination romaine de la fin du Ier siècle."
     },
     "dataAttribution": "Données historiques (ombrage politique) : Ancient World Mapping Center (AWMC, ODbL). Les limites tribales restent des approximations savantes quand des frontières SIG exactes sont indisponibles.",
+    "feedbackNote": "Les couches cartographiques sont des approximations visuelles. Si vous voyez des points à corriger ou des améliorations à proposer, contactez-moi.",
     "closePanel": "Fermer",
     "currentYearLabel": "Année actuelle",
     "scope": {
@@ -369,12 +373,12 @@
       "minorProphets": "Petits prophètes",
       "gospels": "Évangiles",
       "acts": "Actes",
-      "paulineEpistles": "Épîtres pauliniennes",
+      "paulineEpistles": "Épîtres de Paul",
       "generalEpistles": "Épîtres générales",
       "apocalypse": "Apocalypse"
     },
     "intro": "Les livres sont classés selon le moment où leur récit se situe dans l’histoire (pas selon l’ordre du sommaire d’une Bible imprimée). Job suit ainsi de près la Genèse, car son cadre évoque le monde patriarcal. Survolez ou mettez le focus sur une ligne pour un rappel des datations et hypothèses courantes en critique biblique.",
-    "disclaimer": "Les dates et paternités sont débattues ; les textes résument des introductions critiques usuelles, pas un consensus unique.",
+    "disclaimer": "Les dates et les attributions d’auteur sont débattues ; les textes résument des introductions critiques usuelles, pas un consensus unique.",
     "tooltipFallback": "Pas encore de résumé pour ce code.",
     "era": {
       "patriarchs": "Patriarches et cadre sapiential ancien",

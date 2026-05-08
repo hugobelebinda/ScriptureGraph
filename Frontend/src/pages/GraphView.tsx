@@ -49,6 +49,13 @@ function verseLabelFromUid(uid: string): string {
   return `${chapter}:${verse}`;
 }
 
+function displayUid(uid: string, t: (key: string, options?: { defaultValue?: string }) => string): string {
+  const [book, chapter, verse] = uid.split(".");
+  if (!book || !chapter || !verse) return uid;
+  const localizedBook = t(`books.${book}`, { defaultValue: book });
+  return `${localizedBook} ${chapter}:${verse}`;
+}
+
 export function GraphView() {
   const { t } = useTranslation();
   const { lang, fetchCrossReferencesGraph } = useBibleData();
@@ -197,6 +204,11 @@ export function GraphView() {
     );
   }, [graphPayload, graphUids]);
 
+  const centerNode = useMemo(() => {
+    if (!graphPayload || !centerUid) return null;
+    return graphPayload.graph.nodes.find((n) => n.data.uid === centerUid) ?? null;
+  }, [centerUid, graphPayload]);
+
   const elements = useMemo<ElementDefinition[]>(() => {
     return [...graphNodes.map((n) => ({ data: n.data })), ...graphEdges.map((e) => ({ data: e.data }))];
   }, [graphEdges, graphNodes]);
@@ -231,7 +243,9 @@ export function GraphView() {
         <header className="flex items-center justify-between border-b border-sage-primary/35 px-4 py-3">
           <div>
             <h2 className="text-lg font-semibold text-sage-dark">{t("nav.graph")}</h2>
-            <p className="text-xs text-sage-dark/70">{t("graph.meta", { uid: centerUid })}</p>
+            <p className="text-xs text-sage-dark/70">
+              {t("graph.meta", { uid: displayUid(centerUid, t) })}
+            </p>
           </div>
           <div className="text-right text-xs text-sage-dark/70">
             <div>
@@ -272,6 +286,23 @@ export function GraphView() {
               });
             }}
           />
+          <p className="mt-2 rounded-md border border-sage-primary/35 bg-white/70 px-2.5 py-1.5 text-[11px] leading-relaxed text-sage-dark/75">
+            {t("graph.lsgVerseMergeNotice")}
+          </p>
+
+          {centerNode ? (
+            <div className="mt-3 rounded-lg border border-sage-primary/55 bg-sage-primary/25 px-3 py-2">
+              <div className="mb-1 text-xs font-semibold text-sage-forest">
+                {displayUid(centerNode.data.uid, t)}
+              </div>
+              <p className="text-sm leading-relaxed text-sage-dark">
+                {lang === "fr" ? centerNode.data.text_fr : centerNode.data.text_en}
+              </p>
+              <p className="mt-1 text-xs italic leading-relaxed text-sage-dark/60">
+                {lang === "fr" ? centerNode.data.text_en : centerNode.data.text_fr}
+              </p>
+            </div>
+          ) : null}
 
           <div className="mt-3 flex items-center gap-2">
             <button

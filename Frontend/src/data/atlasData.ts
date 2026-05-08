@@ -1,4 +1,6 @@
 import { BOOK_ORDER } from "./canonicalBooks";
+import chronologyTooltipsEn from "../locales/chronology-tooltips.en.json";
+import chronologyTooltipsFr from "../locales/chronology-tooltips.fr.json";
 
 export type EmpireLayer = {
   id: string;
@@ -303,6 +305,43 @@ type AuthorshipProfile = {
   contextFr: string;
 };
 
+const PAULINE_AUTHOR_BOOKS = new Set([
+  "ROM",
+  "1CO",
+  "2CO",
+  "GAL",
+  "EPH",
+  "PHP",
+  "COL",
+  "1TH",
+  "2TH",
+  "1TI",
+  "2TI",
+  "TIT",
+  "PHM",
+]);
+
+function toAtlasShortSummary(text: string): string {
+  const normalized = text.replace(/\s+/g, " ").trim();
+  if (!normalized) return "";
+  const firstSentence = normalized.split(/(?<=[.!?])\s+/)[0] ?? normalized;
+  const withoutDateDetails = firstSentence
+    .replace(
+      /\([^)]*(?:\b(?:BC|BCE|AD|CE)\b|av\.\s*J\.-C\.|apr\.\s*J\.-C\.|\b\d{1,4}\b|siècle|century|c\.)[^)]*\)/gi,
+      "",
+    )
+    .replace(
+      /(?:,\s*|;\s*)[^,;.!?]*(?:\b(?:BC|BCE|AD|CE)\b|av\.\s*J\.-C\.|apr\.\s*J\.-C\.|\b\d{1,4}\b|siècle|century|c\.)[^,;.!?]*/gi,
+      "",
+    )
+    .replace(/\s{2,}/g, " ")
+    .replace(/\s+([,.;!?])/g, "$1")
+    .trim();
+  const concise = withoutDateDetails || firstSentence;
+  if (concise.length <= 190) return concise;
+  return `${concise.slice(0, 187).trimEnd()}...`;
+}
+
 const PLACE_COORDS: Record<string, [number, number]> = {
   "atlas.place.moab": [31.95, 35.93],
   "atlas.place.jerusalem": [31.78, 35.23],
@@ -553,13 +592,13 @@ const BOOK_PROFILES: Partial<Record<(typeof BOOK_ORDER)[number], AuthorshipProfi
     contextFr: "Oracle sur Édom et Sion après la chute de Juda.",
   },
   JON: {
-    placeKey: "atlas.place.nineveh",
+    placeKey: "atlas.place.jerusalem",
     startYear: -780,
     endYear: -730,
     authorEn: "Jonah tradition",
     authorFr: "Tradition de Jonas",
-    contextEn: "Prophetic narrative focused on Nineveh and mercy.",
-    contextFr: "Récit prophétique centré sur Ninive et la miséricorde.",
+    contextEn: "The book’s Israelite setting is debated; the exact city is unknown, though Jerusalem is often proposed.",
+    contextFr: "Le cadre en Israël est débattu : la ville exacte est inconnue, mais Jérusalem est souvent proposée.",
   },
   MIC: {
     placeKey: "atlas.place.jerusalem",
@@ -571,13 +610,13 @@ const BOOK_PROFILES: Partial<Record<(typeof BOOK_ORDER)[number], AuthorshipProfi
     contextFr: "Oracles de justice pour Juda et Samarie.",
   },
   NAM: {
-    placeKey: "atlas.place.nineveh",
+    placeKey: "atlas.place.judea",
     startYear: -660,
     endYear: -620,
     authorEn: "Nahum",
     authorFr: "Nahum",
-    contextEn: "Prophetic taunt against Nineveh.",
-    contextFr: "Oracle de dérision contre Ninive.",
+    contextEn: "Although the message targets Nineveh, it is generally thought to have been written in Judah (not in Nineveh).",
+    contextFr: "Même si la prophétie vise Ninive, il est généralement pensé qu’elle a été rédigée en Juda (et non à Ninive).",
   },
   HAB: {
     placeKey: "atlas.place.jerusalem",
@@ -769,13 +808,13 @@ const BOOK_PROFILES: Partial<Record<(typeof BOOK_ORDER)[number], AuthorshipProfi
     contextFr: "Exhortations finales dans un contexte de persécution.",
   },
   TIT: {
-    placeKey: "atlas.place.crete",
+    placeKey: "atlas.place.macedonia",
     startYear: 62,
     endYear: 65,
     authorEn: "Pauline pastoral tradition",
     authorFr: "Tradition pastorale paulinienne",
-    contextEn: "Instructions for communities in Crete.",
-    contextFr: "Instructions pour les communautés de Crète.",
+    contextEn: "Letter likely written in Macedonia, giving church order instructions to Titus serving on the island of Crete.",
+    contextFr: "Lettre probablement rédigée en Macédoine, donnant à Tite des instructions d’organisation d’Église pour son service en Crète.",
   },
   PHM: {
     placeKey: "atlas.place.rome",
@@ -820,7 +859,7 @@ const BOOK_PROFILES: Partial<Record<(typeof BOOK_ORDER)[number], AuthorshipProfi
     authorEn: "Petrine tradition",
     authorFr: "Tradition pétrinienne",
     contextEn: "Warning against false teachers and delayed expectations.",
-    contextFr: "Avertissement contre les faux docteurs et le retard perçu.",
+    contextFr: "Avertissement contre les faux enseignants et le retard perçu.",
   },
   "1JN": {
     placeKey: "atlas.place.ephesus",
@@ -876,7 +915,40 @@ function baseProfileForBook(usfm: (typeof BOOK_ORDER)[number]): AuthorshipProfil
 
 export const AUTHORSHIP_STARS: AuthorshipStar[] = BOOK_ORDER.map((usfm, index) => {
   const profile = BOOK_PROFILES[usfm] ?? baseProfileForBook(usfm);
+  const timelineEn = chronologyTooltipsEn[usfm as keyof typeof chronologyTooltipsEn];
+  const timelineFr = chronologyTooltipsFr[usfm as keyof typeof chronologyTooltipsFr];
+  const forcePaul = PAULINE_AUTHOR_BOOKS.has(usfm);
   const base = PLACE_COORDS[profile.placeKey] ?? PLACE_COORDS["atlas.place.jerusalem"];
+  let contextEn = toAtlasShortSummary(timelineEn ?? profile.contextEn);
+  let contextFr = toAtlasShortSummary(timelineFr ?? profile.contextFr);
+
+  // Atlas mini-summaries: add key “debates” detail where you asked for it.
+  // (The timeline summaries are more general, so we enrich the Atlas-only text.)
+  if (usfm === "MAT") {
+    contextEn =
+      "Jesus’ life and teaching; critical dating commonly AD 80–90 (post-temple). " +
+      "The book’s origin is also debated, with Antioch sometimes proposed.";
+    contextFr =
+      "Vie et enseignement de Jésus ; datation critique souvent 80–90 apr. J.-C. " +
+      "Le lieu d’origine du livre est aussi débattu, et Antioche est parfois proposé.";
+  }
+  if (usfm === "JON") {
+    contextEn =
+      "The book’s Israelite setting is debated; the exact city is unknown, though Jerusalem is often proposed.";
+    contextFr = "Le cadre en Israël est débattu : la ville exacte est inconnue, mais Jérusalem est souvent proposée.";
+  }
+  if (usfm === "NAM") {
+    contextEn =
+      "Although the message targets Nineveh, it is generally thought to have been written in Judah (not in Nineveh).";
+    contextFr =
+      "Même si la prophétie vise Ninive, il est généralement pensé qu’elle a été rédigée en Juda (et non à Ninive).";
+  }
+  if (usfm === "TIT") {
+    contextEn =
+      "Letter likely written in Macedonia, giving church order instructions to Titus serving on the island of Crete.";
+    contextFr =
+      "Lettre probablement rédigée en Macédoine, donnant à Tite des instructions d’organisation d’Église pour son service en Crète.";
+  }
   return {
     usfm,
     lat: base[0],
@@ -884,9 +956,9 @@ export const AUTHORSHIP_STARS: AuthorshipStar[] = BOOK_ORDER.map((usfm, index) =
     startYear: profile.startYear,
     endYear: profile.endYear,
     placeKey: profile.placeKey,
-    authorEn: profile.authorEn,
-    authorFr: profile.authorFr,
-    contextEn: profile.contextEn,
-    contextFr: profile.contextFr,
+    authorEn: forcePaul ? "Paul" : profile.authorEn,
+    authorFr: forcePaul ? "Paul" : profile.authorFr,
+    contextEn,
+    contextFr,
   };
 });

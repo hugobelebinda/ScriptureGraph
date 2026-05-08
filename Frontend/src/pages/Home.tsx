@@ -79,6 +79,12 @@ export function Home() {
           <h1 className="text-center font-serif text-4xl font-bold tracking-[0.18em] text-white drop-shadow-md sm:text-5xl md:text-6xl lg:text-7xl">
             {t("home.heroTitle")}
           </h1>
+          <p className="mt-4 text-center text-sm font-semibold tracking-[0.22em] text-white sm:text-base">
+            {t("home.mottoRef")}
+          </p>
+          <p className="mt-2 max-w-3xl px-2 text-center text-sm italic leading-relaxed text-white sm:text-base">
+            {t("home.mottoText")}
+          </p>
           <p className="mt-8 max-w-md text-center text-xs font-medium uppercase tracking-[0.35em] text-white/80">
             {t("home.scrollHint")}
           </p>

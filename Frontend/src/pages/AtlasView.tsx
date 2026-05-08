@@ -393,7 +393,11 @@ export function AtlasView() {
     const map = mapRef.current;
     if (!map) return;
     map.resize();
-    map.jumpTo({ center: MAP_FOCUS_CENTER, zoom: Math.max(map.getZoom(), 3.2) });
+    // Avoid snapping the camera whenever a star is selected.
+    // Only gently recenter/ensure a minimum zoom when the side panel is closed.
+    if (!selectedPlaceKey && !selectedStar && map.getZoom() < 3.2) {
+      map.easeTo({ center: MAP_FOCUS_CENTER, zoom: 3.2, duration: 600 });
+    }
   }, [selectedPlaceKey, selectedStar]);
 
   if (!MAPBOX_TOKEN) {
@@ -524,6 +528,7 @@ export function AtlasView() {
           </div>
         </div>
         <p className="mt-3 text-[11px] text-sage-dark/65">{t("atlas.dataAttribution")}</p>
+        <p className="mt-1 text-[11px] text-sage-dark/60">{t("atlas.feedbackNote")}</p>
       </section>
     </div>
   );

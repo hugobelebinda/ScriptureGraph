@@ -7,7 +7,7 @@
     "chronological": "Timeline"
   },
   "sidebar": {
-    "title": "ScriptureGraph",
+    "title": "ViaScripture",
     "search": "Search"
   },
   "language": {
@@ -25,10 +25,12 @@
     "explore": "Explore"
   },
   "footer": {
-    "notice": "© 2026 ScriptureGraph > Designed & Maintained by Hugo-Nathan Bele-Binda > Built with React, TypeScript, and Vite > Powered by the OpenBible.info Dataset & AO Lab Free Use Bible API"
+    "notice": "© 2026 ViaScripture > Designed & Maintained by Hugo-Nathan Bele-Binda > Built with React, TypeScript, and Vite > Bible versions: English WEB (World English Bible), French LSG (Louis Segond) > Powered by the OpenBible.info Dataset & AO Lab Free Use Bible API"
   },
   "home": {
-    "heroTitle": "ScriptureGraph",
+    "heroTitle": "ViaScripture",
+    "mottoRef": "John 14:6",
+    "mottoText": "“I am the way, and the truth, and the life. No one comes to the Father except through me.”",
     "scrollHint": "Scroll to explore",
     "cardsSectionLabel": "Explore the app",
     "cards": {
@@ -122,7 +124,8 @@
     "tierCore": "Direct Links",
     "tierStrong": "Strong Links",
     "tierAll": "All",
-    "allDoesNotExpandGraph": "Full cross-reference list is shown in the scrolling pane only (graph stays on Direct/Strong selection)."
+    "allDoesNotExpandGraph": "Full cross-reference list is shown in the scrolling pane only (graph stays on Direct/Strong selection).",
+    "lsgVerseMergeNotice": "Note: in Louis Segond (LSG), some verses are grouped into one numbering slot. Example: Psalm 22:1 and Psalm 22:2 can appear together as Psalm 22:1."
   },
   "atlas": {
     "intro": "Move through time to see major empire influence zones and probable authorship locations for selected biblical books.",
@@ -196,6 +199,7 @@
       "REV": "Revelation locates John on Patmos during late first-century Roman rule."
     },
     "dataAttribution": "Historical political shading data: Ancient World Mapping Center (AWMC, ODbL). Tribal boundaries remain scholarly approximations where exact GIS borders are unavailable.",
+    "feedbackNote": "Map overlays are visual approximations. If you notice inaccuracies or have improvements to suggest, please contact me.",
     "closePanel": "Close",
     "currentYearLabel": "Current year",
     "scope": {
@@ -369,7 +373,7 @@
       "minorProphets": "Minor Prophets",
       "gospels": "Gospels",
       "acts": "Acts",
-      "paulineEpistles": "Pauline Epistles",
+      "paulineEpistles": "Paul's Letters",
       "generalEpistles": "General Epistles",
       "apocalypse": "Apocalypse"
     },
