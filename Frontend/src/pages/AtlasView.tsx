@@ -2,6 +2,7 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useIsBelowLg } from "../hooks/useMediaQuery";
 import {
   ATLAS_DEFAULT_YEAR,
   ATLAS_MAX_YEAR,
@@ -66,6 +67,7 @@ function applyStarStyle(el: HTMLButtonElement, zoom: number): void {
 
 export function AtlasView() {
   const { t, i18n } = useTranslation();
+  const isMobile = useIsBelowLg();
   const lang = i18n.language === "fr" ? "fr" : "en";
   const [year, setYear] = useState<number>(ATLAS_DEFAULT_YEAR);
   const [selectedStar, setSelectedStar] = useState<AuthorshipStar | null>(null);
@@ -342,7 +344,7 @@ export function AtlasView() {
       el.style.borderRadius = "4px";
       el.style.lineHeight = "1";
       el.style.pointerEvents = "auto";
-      el.style.zIndex = "30";
+      el.style.zIndex = "5";
       el.textContent = "★";
       el.title =
         booksAtPlace > 1
@@ -399,6 +401,17 @@ export function AtlasView() {
       map.easeTo({ center: MAP_FOCUS_CENTER, zoom: 3.2, duration: 600 });
     }
   }, [selectedPlaceKey, selectedStar]);
+
+  useEffect(() => {
+    const hideStars = isMobile && Boolean(selectedPlaceKey);
+    const map = mapRef.current;
+    const zoom = map?.getZoom() ?? MAP_FOCUS_ZOOM;
+    markerElementsRef.current.forEach((el) => {
+      el.style.visibility = hideStars ? "hidden" : "visible";
+      el.style.pointerEvents = hideStars ? "none" : "auto";
+      if (!hideStars) applyStarStyle(el, zoom);
+    });
+  }, [isMobile, selectedPlaceKey]);
 
   if (!MAPBOX_TOKEN) {
     return (
@@ -457,14 +470,25 @@ export function AtlasView() {
         </div>
 
         <div className="grid gap-4">
-          <div className="relative overflow-hidden rounded-xl">
-            <div ref={mapContainerRef} className="h-[58vh] min-h-[24rem] rounded-xl" />
+          <div className="relative isolate overflow-hidden rounded-xl">
+            <div ref={mapContainerRef} className="relative z-0 h-[58vh] min-h-[24rem] rounded-xl" />
             <div
-              className="pointer-events-none absolute inset-0 rounded-xl bg-gradient-to-b from-[#f4e4c8]/26 via-transparent to-[#f3e2c2]/18"
+              className="pointer-events-none absolute inset-0 z-10 rounded-xl bg-gradient-to-b from-[#f4e4c8]/26 via-transparent to-[#f3e2c2]/18"
               aria-hidden
             />
+            {isMobile && selectedPlaceKey ? (
+              <button
+                type="button"
+                className="absolute inset-0 z-20 rounded-xl bg-black/25 lg:hidden"
+                aria-label={t("atlas.closePanel")}
+                onClick={() => {
+                  setSelectedPlaceKey(null);
+                  setSelectedStar(null);
+                }}
+              />
+            ) : null}
             <aside
-              className={`absolute border-amber-200/70 bg-[#f7efe1]/95 p-4 shadow-xl transition-transform duration-300
+              className={`absolute z-30 border-amber-200/70 bg-[#f7efe1]/95 p-4 shadow-xl transition-transform duration-300
                 right-0 top-0 h-full w-[22rem] max-w-[92%] border-l
                 max-lg:inset-x-0 max-lg:bottom-0 max-lg:top-auto max-lg:h-auto max-lg:max-h-[75vh] max-lg:w-full max-lg:max-w-none max-lg:overflow-y-auto max-lg:rounded-t-2xl max-lg:border-l-0 max-lg:border-t
                 ${
