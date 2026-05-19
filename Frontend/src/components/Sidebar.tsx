@@ -13,7 +13,7 @@ export function Sidebar() {
   const navigate = useNavigate();
 
   return (
-    <aside className="flex w-64 shrink-0 flex-col gap-6 border-r border-sage-primary/40 bg-sage-primary/25 p-4">
+    <aside className="hidden w-64 shrink-0 flex-col gap-6 border-r border-sage-primary/40 bg-sage-primary/25 p-4 lg:flex">
       <div>
         <h1 className="text-lg font-bold text-sage-dark">{t("sidebar.title")}</h1>
       </div>

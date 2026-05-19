@@ -2,8 +2,10 @@ import { type ElementDefinition } from "cytoscape";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
+import { GraphVersePanel } from "../components/GraphVersePanel";
 import { HierarchicalSearch } from "../components/HierarchicalSearch";
 import { RelationalGraphCanvas } from "../components/RelationalGraphCanvas";
+import { useIsBelowLg } from "../hooks/useMediaQuery";
 import { BOOK_ORDER } from "../data/canonicalBooks";
 import {
   type CrossReferencesGraphPayload,
@@ -78,7 +80,9 @@ export function GraphView() {
   const [hoveredUid, setHoveredUid] = useState<string | null>(null);
   const [graphTier, setGraphTier] = useState<"core" | "strong">("core");
   const [listTier, setListTier] = useState<FilterTier>("core");
+  const [mobileTab, setMobileTab] = useState<"graph" | "verses">("graph");
   const itemRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const isMobile = useIsBelowLg();
 
   useEffect(() => {
     setCenterUid(verseFromUrl);
@@ -117,18 +121,11 @@ export function GraphView() {
   }, [centerUid, fetchCrossReferencesGraph, t]);
 
   useEffect(() => {
-    if (!hoveredUid) return;
-    const node = itemRefs.current[hoveredUid];
-    if (!node) return;
-    node.scrollIntoView({ behavior: "smooth", block: "center" });
-  }, [hoveredUid]);
-
-  useEffect(() => {
     setGraphTier("core");
     setListTier("core");
   }, [centerUid]);
 
-  const onNodeSelect = useCallback(
+  const selectVerse = useCallback(
     (uid: string) => {
       const normalized = normalizeVerseUidInput(uid);
       if (!normalized) return;
@@ -136,6 +133,14 @@ export function GraphView() {
       setParams((prev) => nextParamsWithVerse(prev, normalized), { replace: true });
     },
     [setParams],
+  );
+
+  const onNodeSelect = useCallback(
+    (uid: string) => {
+      selectVerse(uid);
+      if (isMobile) setMobileTab("verses");
+    },
+    [isMobile, selectVerse],
   );
 
   const onNodeHover = useCallback((uid: string | null) => {
@@ -188,14 +193,20 @@ export function GraphView() {
     if (!graphPayload) return [];
     return graphPayload.graph.nodes
       .filter((n) => graphUids.has(n.data.uid))
-      .map((n) => ({
-        data: {
-          ...n.data,
-          label: `${(lang === "fr" ? n.data.book_name_fr : n.data.book_name_en).toUpperCase()} ${verseLabelFromUid(n.data.uid)}`,
-          color: bookColor(n.data.book),
-        },
-      }));
-  }, [graphPayload, graphUids, lang]);
+      .map((n) => {
+        const bookName = lang === "fr" ? n.data.book_name_fr : n.data.book_name_en;
+        const label = isMobile
+          ? `${n.data.book} ${verseLabelFromUid(n.data.uid)}`
+          : `${bookName.toUpperCase()} ${verseLabelFromUid(n.data.uid)}`;
+        return {
+          data: {
+            ...n.data,
+            label,
+            color: bookColor(n.data.book),
+          },
+        };
+      });
+  }, [graphPayload, graphUids, isMobile, lang]);
 
   const graphEdges = useMemo(() => {
     if (!graphPayload) return [];
@@ -213,9 +224,39 @@ export function GraphView() {
     return [...graphNodes.map((n) => ({ data: n.data })), ...graphEdges.map((e) => ({ data: e.data }))];
   }, [graphEdges, graphNodes]);
 
+  useEffect(() => {
+    if (!hoveredUid || isMobile) return;
+    const node = itemRefs.current[hoveredUid];
+    if (!node) return;
+    node.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [hoveredUid, isMobile]);
+
+  const uidLabel = useCallback((uid: string) => displayUid(uid, t), [t]);
+
+  const versePanelProps = centerUid
+    ? {
+        t,
+        lang,
+        centerUid,
+        centerNode,
+        preselectedBookFromUrl,
+        displayUid: uidLabel,
+        listTier,
+        setListTier,
+        setGraphTier,
+        feed,
+        loading,
+        hoveredUid,
+        itemRefs,
+        onSelectVerse: selectVerse,
+        onNodeSelect,
+        compact: isMobile,
+      }
+    : null;
+
   if (!centerUid) {
     return (
-      <section className="flex h-screen items-center justify-center bg-sage-bg px-6 text-sage-dark">
+      <section className="flex min-h-[calc(100dvh-3.5rem)] items-center justify-center bg-sage-bg px-6 text-sage-dark lg:h-screen lg:min-h-0">
         <div className="w-full max-w-xl rounded-2xl border border-sage-primary/40 bg-white/85 p-6 shadow-sm">
           <h2 className="text-2xl font-semibold text-sage-dark">{t("nav.graph")}</h2>
           <p className="mt-2 text-sm text-sage-dark/80">{t("graph.enterPrompt")}</p>
@@ -237,160 +278,81 @@ export function GraphView() {
     );
   }
 
-  return (
-    <section className="flex h-screen bg-sage-bg text-sage-dark">
-      <div className="flex w-3/5 min-w-0 flex-col border-r border-sage-primary/45 bg-white/85">
-        <header className="flex items-center justify-between border-b border-sage-primary/35 px-4 py-3">
-          <div>
-            <h2 className="text-lg font-semibold text-sage-dark">{t("nav.graph")}</h2>
-            <p className="text-xs text-sage-dark/70">
-              {t("graph.meta", { uid: displayUid(centerUid, t) })}
-            </p>
-          </div>
-          <div className="text-right text-xs text-sage-dark/70">
-            <div>
-              {loading ? t("graph.loading") : t("graph.nodesCount", { count: graphNodes.length })}
-            </div>
-            <div>
-              {loading ? "" : t("graph.edgesCount", { count: graphEdges.length })}
-            </div>
-          </div>
-        </header>
-        <div className="min-h-0 flex-1">
-          {error ? (
-            <div className="flex h-full items-center justify-center text-sm text-red-700">{error}</div>
-          ) : (
-            <RelationalGraphCanvas
-              elements={elements}
-              centerUid={centerUid}
-              onNodeSelect={onNodeSelect}
-              onNodeHover={onNodeHover}
-            />
-          )}
+  const graphCanvas = error ? (
+    <div className="flex h-full items-center justify-center text-sm text-red-700">{error}</div>
+  ) : (
+    <RelationalGraphCanvas
+      elements={elements}
+      centerUid={centerUid}
+      compactLabels={isMobile}
+      visible={!isMobile || mobileTab === "graph"}
+      onNodeSelect={onNodeSelect}
+      onNodeHover={onNodeHover}
+    />
+  );
+
+  const graphHeader = (
+    <header className="flex shrink-0 items-center justify-between border-b border-sage-primary/35 px-3 py-2 lg:px-4 lg:py-3">
+      <div>
+        <h2 className="text-base font-semibold text-sage-dark lg:text-lg">{t("nav.graph")}</h2>
+        <p className="text-[11px] text-sage-dark/70 lg:text-xs">
+          {t("graph.meta", { uid: displayUid(centerUid, t) })}
+        </p>
+      </div>
+      <div className="text-right text-[11px] text-sage-dark/70 lg:text-xs">
+        <div>
+          {loading ? t("graph.loading") : t("graph.nodesCount", { count: graphNodes.length })}
         </div>
+        <div>{loading ? "" : t("graph.edgesCount", { count: graphEdges.length })}</div>
+      </div>
+    </header>
+  );
+
+  return (
+    <section className="flex h-[calc(100dvh-3.5rem)] flex-col bg-sage-bg text-sage-dark lg:h-screen">
+      <div className="flex shrink-0 border-b border-sage-primary/35 lg:hidden">
+        <button
+          type="button"
+          onClick={() => setMobileTab("graph")}
+          className={`flex-1 px-3 py-2.5 text-sm font-semibold ${
+            mobileTab === "graph"
+              ? "border-b-2 border-sage-forest text-sage-forest"
+              : "text-sage-dark/70"
+          }`}
+        >
+          {t("mobile.graphTab")}
+        </button>
+        <button
+          type="button"
+          onClick={() => setMobileTab("verses")}
+          className={`flex-1 px-3 py-2.5 text-sm font-semibold ${
+            mobileTab === "verses"
+              ? "border-b-2 border-sage-forest text-sage-forest"
+              : "text-sage-dark/70"
+          }`}
+        >
+          {t("mobile.versesTab")}
+        </button>
       </div>
 
-      <aside className="flex w-2/5 min-w-[22rem] flex-col bg-sage-primary/15">
-        <div className="border-b border-sage-primary/35 px-4 py-3">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-sage-dark/75">
-            {t("graph.searchLabel")}
-          </p>
-          <HierarchicalSearch
-            initialBook={preselectedBookFromUrl}
-            onSelectVerse={(uid) => {
-              const normalized = normalizeVerseUidInput(uid);
-              if (!normalized) return;
-              setCenterUid(normalized);
-              setParams((prev) => nextParamsWithVerse(prev, normalized), {
-                replace: true,
-              });
-            }}
-          />
-          <p className="mt-2 rounded-md border border-sage-primary/35 bg-white/70 px-2.5 py-1.5 text-[11px] leading-relaxed text-sage-dark/75">
-            {t("graph.lsgVerseMergeNotice")}
-          </p>
-
-          {centerNode ? (
-            <div className="mt-3 rounded-lg border border-sage-primary/55 bg-sage-primary/25 px-3 py-2">
-              <div className="mb-1 text-xs font-semibold text-sage-forest">
-                {displayUid(centerNode.data.uid, t)}
-              </div>
-              <p className="text-sm leading-relaxed text-sage-dark">
-                {lang === "fr" ? centerNode.data.text_fr : centerNode.data.text_en}
-              </p>
-              <p className="mt-1 text-xs italic leading-relaxed text-sage-dark/60">
-                {lang === "fr" ? centerNode.data.text_en : centerNode.data.text_fr}
-              </p>
-            </div>
-          ) : null}
-
-          <div className="mt-3 flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => {
-                setGraphTier("core");
-                setListTier("core");
-              }}
-              className={`rounded-md px-2.5 py-1.5 text-xs font-semibold transition ${
-                listTier === "core"
-                  ? "bg-sage-forest text-white"
-                  : "bg-white text-sage-dark border border-sage-primary/45"
-              }`}
-            >
-              {t("graph.tierCore")}
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setGraphTier("strong");
-                setListTier("strong");
-              }}
-              className={`rounded-md px-2.5 py-1.5 text-xs font-semibold transition ${
-                listTier === "strong"
-                  ? "bg-sage-forest text-white"
-                  : "bg-white text-sage-dark border border-sage-primary/45"
-              }`}
-            >
-              {t("graph.tierStrong")}
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setListTier("all");
-              }}
-              className={`rounded-md px-2.5 py-1.5 text-xs font-semibold transition ${
-                listTier === "all"
-                  ? "bg-sage-forest text-white"
-                  : "bg-white text-sage-dark border border-sage-primary/45"
-              }`}
-            >
-              {t("graph.tierAll")}
-            </button>
-          </div>
-          {listTier === "all" ? (
-            <p className="mt-1 text-[11px] text-sage-dark/65">{t("graph.allDoesNotExpandGraph")}</p>
-          ) : null}
+      <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
+        <div
+          className={`min-h-0 min-w-0 flex-col bg-white/85 lg:flex lg:w-3/5 lg:border-r lg:border-sage-primary/45 ${
+            isMobile && mobileTab !== "graph" ? "hidden" : "flex flex-1"
+          }`}
+        >
+          {graphHeader}
+          <div className="min-h-0 flex-1">{graphCanvas}</div>
         </div>
 
-        <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-3 py-3">
-          {feed.map((item) => {
-            const primary = lang === "fr" ? item.text_fr : item.text_en;
-            const secondary = lang === "fr" ? item.text_en : item.text_fr;
-            const isHovered = hoveredUid === item.uid;
-            const isCenter = centerUid === item.uid;
-            return (
-              <div
-                key={item.uid}
-                ref={(el) => {
-                  itemRefs.current[item.uid] = el;
-                }}
-                className={`rounded-lg border px-3 py-2 transition ${
-                  isCenter
-                    ? "border-sage-forest bg-sage-forest/10"
-                    : isHovered
-                      ? "border-sage-primary bg-sage-primary/15"
-                      : "border-sage-primary/35 bg-white/70"
-                }`}
-              >
-                <div className="mb-1">
-                  <button
-                    type="button"
-                    onClick={() => onNodeSelect(item.uid)}
-                    className="text-left text-xs font-semibold text-sage-forest hover:text-sage-dark"
-                  >
-                    {item.uid}
-                  </button>
-                </div>
-                <p className="text-sm leading-relaxed text-sage-dark">{primary}</p>
-                <p className="mt-1 text-xs italic leading-relaxed text-sage-dark/60">{secondary}</p>
-              </div>
-            );
-          })}
-          {!loading && feed.length === 0 ? (
-            <p className="px-2 py-6 text-sm text-sage-dark/70">{t("graph.noVerses")}</p>
-          ) : null}
-        </div>
-      </aside>
+        <aside
+          className={`min-h-0 min-w-0 flex-col bg-sage-primary/15 lg:flex lg:w-2/5 lg:min-w-[22rem] ${
+            isMobile && mobileTab !== "verses" ? "hidden" : "flex flex-1"
+          }`}
+        >
+          {versePanelProps ? <GraphVersePanel {...versePanelProps} /> : null}
+        </aside>
+      </div>
     </section>
   );
 }

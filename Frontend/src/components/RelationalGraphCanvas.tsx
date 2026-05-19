@@ -4,15 +4,75 @@ import { memo, useEffect, useRef } from "react";
 type Props = {
   elements: ElementDefinition[];
   centerUid: string;
+  compactLabels?: boolean;
+  visible?: boolean;
   onNodeSelect: (uid: string) => void;
   onNodeHover: (uid: string | null) => void;
 };
 
-function GraphCanvasComponent({ elements, centerUid, onNodeSelect, onNodeHover }: Props) {
+function GraphCanvasComponent({
+  elements,
+  centerUid,
+  compactLabels = false,
+  visible = true,
+  onNodeSelect,
+  onNodeHover,
+}: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const cyRef = useRef<Core | null>(null);
   const prevTopologyKeyRef = useRef<string | null>(null);
   const prevCenterUidRef = useRef<string | null>(null);
+  const compactLabelsRef = useRef(compactLabels);
+  const visibleRef = useRef(visible);
+  const centerUidRef = useRef(centerUid);
+  compactLabelsRef.current = compactLabels;
+  visibleRef.current = visible;
+  centerUidRef.current = centerUid;
+
+  const refitAndCenter = (cy: Core): boolean => {
+    const container = containerRef.current;
+    if (!container || container.offsetWidth === 0 || container.offsetHeight === 0) return false;
+
+    const padding = compactLabelsRef.current ? 28 : 36;
+    const maxZoom = compactLabelsRef.current ? 1.05 : 1.18;
+
+    cy.resize();
+    cy.fit(undefined, padding);
+    if (cy.zoom() > maxZoom) cy.zoom(maxZoom);
+
+    const center = cy.getElementById(centerUidRef.current);
+    if (center.nonempty()) {
+      center.select();
+      cy.center(center);
+    }
+    return true;
+  };
+
+  const scheduleRefitWhenVisible = (cy: Core) => {
+    let cancelled = false;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+    const tryRefit = () => {
+      if (cancelled || !visibleRef.current) return false;
+      return refitAndCenter(cy);
+    };
+
+    const raf1 = window.requestAnimationFrame(() => {
+      if (tryRefit()) return;
+      window.requestAnimationFrame(() => {
+        if (tryRefit()) return;
+        timeoutId = window.setTimeout(() => {
+          tryRefit();
+        }, 80);
+      });
+    });
+
+    return () => {
+      cancelled = true;
+      window.cancelAnimationFrame(raf1);
+      if (timeoutId !== undefined) window.clearTimeout(timeoutId);
+    };
+  };
 
   useEffect(() => {
     if (!containerRef.current || cyRef.current) return;
@@ -27,9 +87,9 @@ function GraphCanvasComponent({ elements, centerUid, onNodeSelect, onNodeHover }
             "background-color": "data(color)",
             label: "data(label)",
             color: "#334155",
-            "font-size": 10,
+            "font-size": compactLabels ? 8 : 10,
             "text-wrap": "wrap",
-            "text-max-width": "72px",
+            "text-max-width": compactLabels ? "44px" : "72px",
             "text-valign": "bottom",
             "text-margin-y": 6,
             "border-width": 1,
@@ -46,7 +106,7 @@ function GraphCanvasComponent({ elements, centerUid, onNodeSelect, onNodeHover }
             "border-width": 2,
             "border-color": "#10b981",
             color: "#14532d",
-            "font-size": 11,
+            "font-size": compactLabels ? 9 : 11,
           },
         },
         {
@@ -86,19 +146,20 @@ function GraphCanvasComponent({ elements, centerUid, onNodeSelect, onNodeHover }
         name: "breadthfirst",
         roots: [centerUid],
         directed: true,
-        spacingFactor: 1.45,
-        padding: 36,
+        spacingFactor: compactLabels ? 1.65 : 1.45,
+        padding: compactLabels ? 28 : 36,
         animate: false,
         fit: true,
       },
       wheelSensitivity: 0.22,
     });
-    cy.minZoom(0.28);
-    cy.maxZoom(2.1);
+    cy.minZoom(compactLabels ? 0.2 : 0.28);
+    cy.maxZoom(compactLabels ? 1.6 : 2.1);
 
     cy.on("tap", "node", (evt) => {
       const uid = evt.target.id();
       cy.animate({ center: { eles: evt.target }, duration: 180 });
+      onNodeHover(uid);
       onNodeSelect(uid);
     });
 
@@ -120,11 +181,25 @@ function GraphCanvasComponent({ elements, centerUid, onNodeSelect, onNodeHover }
 
     cyRef.current = cy;
 
+    const container = containerRef.current;
+    if (!container) return;
+
+    let resizeTimer: ReturnType<typeof setTimeout> | undefined;
+    const observer = new ResizeObserver(() => {
+      if (!visibleRef.current) return;
+      if (resizeTimer !== undefined) window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        refitAndCenter(cy);
+      }, 50);
+    });
+    observer.observe(container);
+
     return () => {
+      observer.disconnect();
       cy.destroy();
       cyRef.current = null;
     };
-  }, [onNodeHover, onNodeSelect]);
+  }, [compactLabels, onNodeHover, onNodeSelect]);
 
   useEffect(() => {
     const cy = cyRef.current;
@@ -160,37 +235,48 @@ function GraphCanvasComponent({ elements, centerUid, onNodeSelect, onNodeHover }
           if (edge.nonempty()) edge.data(el.data ?? {});
         }
       });
+      if (visibleRef.current) refitAndCenter(cy);
     } else {
-      const shouldFit = prevTopologyKeyRef.current === null || prevCenterUidRef.current !== centerUid;
       cy.elements().remove();
       cy.add(elements);
       cy.layout({
         name: "breadthfirst",
         roots: [centerUid],
         directed: true,
-        spacingFactor: 1.45,
+        spacingFactor: compactLabelsRef.current ? 1.65 : 1.45,
         animate: false,
-        fit: shouldFit,
-        padding: 36,
+        fit: false,
+        padding: compactLabelsRef.current ? 28 : 36,
       }).run();
-      if (shouldFit) {
-        cy.fit(undefined, 36);
-        if (cy.zoom() > 1.18) {
-          cy.zoom(1.18);
-        }
-      }
       prevTopologyKeyRef.current = topologyKey;
+      if (visibleRef.current) scheduleRefitWhenVisible(cy);
     }
 
-    const center = cy.getElementById(centerUid);
-    if (center.nonempty()) {
-      center.select();
-      cy.animate({ center: { eles: center }, duration: 220 });
-    }
     prevCenterUidRef.current = centerUid;
   }, [centerUid, elements]);
 
-  return <div ref={containerRef} className="h-full w-full" />;
+  useEffect(() => {
+    const cy = cyRef.current;
+    if (!cy) return;
+    cy.style()
+      .selector("node")
+      .style({
+        "font-size": compactLabels ? 8 : 10,
+        "text-max-width": compactLabels ? "44px" : "72px",
+      })
+      .selector("node[distance = 0]")
+      .style("font-size", compactLabels ? 9 : 11)
+      .update();
+    if (visibleRef.current) scheduleRefitWhenVisible(cy);
+  }, [compactLabels]);
+
+  useEffect(() => {
+    const cy = cyRef.current;
+    if (!cy || !visible) return;
+    return scheduleRefitWhenVisible(cy);
+  }, [visible, centerUid, elements.length]);
+
+  return <div ref={containerRef} className="h-full min-h-[12rem] w-full" />;
 }
 
 export const RelationalGraphCanvas = memo(GraphCanvasComponent);
