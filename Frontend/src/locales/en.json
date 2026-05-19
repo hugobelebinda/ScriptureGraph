@@ -10,6 +10,13 @@
     "title": "ViaScripture",
     "search": "Search"
   },
+  "mobile": {
+    "openMenu": "Menu",
+    "closeMenu": "Close",
+    "graphTab": "Graph",
+    "versesTab": "Verses",
+    "openInGraph": "Open in Graph"
+  },
   "language": {
     "en": "English",
     "fr": "Français",
@@ -240,6 +247,8 @@
   },
   "compass": {
     "intro": "These cards are for the days your heart is loud. Choose the one that sounds most like how you feel, then click a verse reference to sit with God and his word.",
+    "closeDetail": "Close",
+    "backToVerseList": "Back to verse list",
     "pickVerseHint": "Click a reference below to read the verse and a short note about its context.",
     "noVerseSelected": "Choose a reference on the left to see the verse and reflection here.",
     "loadingVerse": "Loading this verse from the Scriptures…",

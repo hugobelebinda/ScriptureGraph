@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { BookCoverImage } from "../components/BookCoverImage";
+import { useIsBelowLg } from "../hooks/useMediaQuery";
 import { BOOK_ORDER } from "../data/canonicalBooks";
 import { CHRONOLOGY_SECTIONS } from "../data/chronologicalBooks";
 
@@ -20,6 +21,8 @@ const BIBLICAL_ORDER_SECTIONS = [
   { key: "apocalypse", books: ["REV"] },
 ] as const;
 
+type OrderMode = "biblical" | "chronological";
+
 function TimelineBookRow({
   usfm,
   position,
@@ -28,6 +31,7 @@ function TimelineBookRow({
   position: number;
 }) {
   const { t } = useTranslation();
+  const isMobile = useIsBelowLg();
   const [open, setOpen] = useState(false);
   const showTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -69,8 +73,8 @@ function TimelineBookRow({
       />
       <div
         className="relative rounded-lg outline-none"
-        onMouseEnter={scheduleShow}
-        onMouseLeave={scheduleHide}
+        onMouseEnter={isMobile ? undefined : scheduleShow}
+        onMouseLeave={isMobile ? undefined : scheduleHide}
         onFocusCapture={showNow}
         onBlurCapture={(e) => {
           const next = e.relatedTarget;
@@ -78,21 +82,33 @@ function TimelineBookRow({
           scheduleHide();
         }}
       >
-        <Link
-          to={`/graph?book=${encodeURIComponent(usfm)}`}
-          className="group flex items-baseline justify-between gap-3 rounded-lg border border-transparent px-2 py-2 transition hover:border-sage-primary/40 hover:bg-white/60 focus-visible:ring-2 focus-visible:ring-sage-forest focus-visible:ring-offset-2 focus-visible:ring-offset-sage-bg"
-          aria-describedby={open ? tipId : undefined}
-        >
-          <span className="font-medium text-sage-dark group-hover:text-sage-forest">
-            <span className="mr-2 tabular-nums text-sage-dark/50">
-              {position}.
+        {isMobile ? (
+          <button
+            type="button"
+            onClick={() => setOpen((prev) => !prev)}
+            className="group flex w-full items-baseline justify-between gap-3 rounded-lg border border-transparent px-2 py-2 text-left transition hover:border-sage-primary/40 hover:bg-white/60 focus-visible:ring-2 focus-visible:ring-sage-forest focus-visible:ring-offset-2 focus-visible:ring-offset-sage-bg"
+            aria-expanded={open}
+            aria-describedby={open ? tipId : undefined}
+          >
+            <span className="font-medium text-sage-dark group-hover:text-sage-forest">
+              <span className="mr-2 tabular-nums text-sage-dark/50">{position}.</span>
+              {t(`books.${usfm}`, { defaultValue: usfm })}
             </span>
-            {t(`books.${usfm}`, { defaultValue: usfm })}
-          </span>
-          <span className="shrink-0 font-mono text-xs text-sage-dark/45">
-            {usfm}
-          </span>
-        </Link>
+            <span className="shrink-0 font-mono text-xs text-sage-dark/45">{usfm}</span>
+          </button>
+        ) : (
+          <Link
+            to={`/graph?book=${encodeURIComponent(usfm)}`}
+            className="group flex items-baseline justify-between gap-3 rounded-lg border border-transparent px-2 py-2 transition hover:border-sage-primary/40 hover:bg-white/60 focus-visible:ring-2 focus-visible:ring-sage-forest focus-visible:ring-offset-2 focus-visible:ring-offset-sage-bg"
+            aria-describedby={open ? tipId : undefined}
+          >
+            <span className="font-medium text-sage-dark group-hover:text-sage-forest">
+              <span className="mr-2 tabular-nums text-sage-dark/50">{position}.</span>
+              {t(`books.${usfm}`, { defaultValue: usfm })}
+            </span>
+            <span className="shrink-0 font-mono text-xs text-sage-dark/45">{usfm}</span>
+          </Link>
+        )}
         {open ? (
           <div
             id={tipId}
@@ -108,10 +124,17 @@ function TimelineBookRow({
               <div className="mx-auto w-full max-w-[min(100%,280px)] shrink-0 overflow-hidden rounded-lg ring-1 ring-sage-primary/30 sm:mx-0 sm:w-56 sm:max-w-none">
                 <BookCoverImage usfm={usfm} />
               </div>
-              <p className="min-w-0 flex-1 text-sm leading-relaxed text-sage-dark/95">
-                {tip}
-              </p>
+              <p className="min-w-0 flex-1 text-sm leading-relaxed text-sage-dark/95">{tip}</p>
             </div>
+            {isMobile ? (
+              <Link
+                to={`/graph?book=${encodeURIComponent(usfm)}`}
+                className="mx-4 mb-4 inline-block rounded-lg bg-sage-forest px-3 py-2 text-xs font-semibold text-white"
+                onClick={() => setOpen(false)}
+              >
+                {t("mobile.openInGraph")}
+              </Link>
+            ) : null}
           </div>
         ) : null}
       </div>
@@ -121,6 +144,8 @@ function TimelineBookRow({
 
 export function ChronologicalView() {
   const { t } = useTranslation();
+  const isMobile = useIsBelowLg();
+  const [orderMode, setOrderMode] = useState<OrderMode>("chronological");
 
   const biblicalSectionsWithPos = useMemo(() => {
     let p = 0;
@@ -147,63 +172,105 @@ export function ChronologicalView() {
     }));
   }, []);
 
+  const showBiblical = !isMobile || orderMode === "biblical";
+  const showChronological = !isMobile || orderMode === "chronological";
+
   return (
     <div className="mx-auto max-w-7xl pb-16">
       <header className="mb-8 border-b border-sage-primary/30 pb-6">
-        <h1 className="text-3xl font-bold tracking-tight text-sage-dark">
-          {t("chronology.title")}
-        </h1>
-        <p className="mt-3 text-sm leading-relaxed text-sage-dark/80">
-          {t("chronology.intro")}
-        </p>
+        <h1 className="text-3xl font-bold tracking-tight text-sage-dark">{t("chronology.title")}</h1>
+        <p className="mt-3 text-sm leading-relaxed text-sage-dark/80">{t("chronology.intro")}</p>
       </header>
 
-      <div className="grid gap-10 lg:grid-cols-2">
-        <section aria-labelledby="biblical-order">
-          <h2 id="biblical-order" className="mb-4 text-lg font-semibold text-sage-forest">
+      {isMobile ? (
+        <div
+          className="mb-6 flex rounded-lg border border-sage-primary/45 bg-white/60 p-1 lg:hidden"
+          role="tablist"
+          aria-label={t("chronology.title")}
+        >
+          <button
+            type="button"
+            role="tab"
+            aria-selected={orderMode === "biblical"}
+            onClick={() => setOrderMode("biblical")}
+            className={`flex-1 rounded-md px-3 py-2 text-sm font-semibold transition ${
+              orderMode === "biblical"
+                ? "bg-sage-forest text-white"
+                : "text-sage-dark hover:bg-sage-primary/30"
+            }`}
+          >
             {t("chronology.biblicalOrder")}
-          </h2>
-          <div className="space-y-10">
-            {biblicalSectionsWithPos.map((section) => (
-              <section key={section.key} aria-labelledby={`bib-section-${section.key}`}>
-                <h3
-                  id={`bib-section-${section.key}`}
-                  className="mb-4 text-base font-semibold text-sage-forest/90"
-                >
-                  {t(`chronology.biblicalSections.${section.key}`)}
-                </h3>
-                <ol className="space-y-2 border-l-2 border-sage-primary/50 pl-4">
-                  {section.books.map(({ usfm, position }) => (
-                    <TimelineBookRow key={`bib-${usfm}`} usfm={usfm} position={position} />
-                  ))}
-                </ol>
-              </section>
-            ))}
-          </div>
-        </section>
-
-        <section aria-labelledby="chronological-order">
-          <h2 id="chronological-order" className="mb-4 text-lg font-semibold text-sage-forest">
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={orderMode === "chronological"}
+            onClick={() => setOrderMode("chronological")}
+            className={`flex-1 rounded-md px-3 py-2 text-sm font-semibold transition ${
+              orderMode === "chronological"
+                ? "bg-sage-forest text-white"
+                : "text-sage-dark hover:bg-sage-primary/30"
+            }`}
+          >
             {t("chronology.chronologicalOrder")}
-          </h2>
-          <div className="space-y-12">
-            {sectionsWithPos.map((section) => (
-              <section key={section.eraKey} aria-labelledby={`era-${section.eraKey}`}>
-                <h3
-                  id={`era-${section.eraKey}`}
-                  className="mb-4 text-base font-semibold text-sage-forest/90"
-                >
-                  {t(`chronology.era.${section.eraKey}`)}
-                </h3>
-                <ol className="space-y-2 border-l-2 border-sage-primary/50 pl-4">
-                  {section.books.map(({ usfm, position }) => (
-                    <TimelineBookRow key={usfm} usfm={usfm} position={position} />
-                  ))}
-                </ol>
-              </section>
-            ))}
-          </div>
-        </section>
+          </button>
+        </div>
+      ) : null}
+
+      <div className={isMobile ? "space-y-10" : "grid gap-10 lg:grid-cols-2"}>
+        {showBiblical ? (
+          <section aria-labelledby="biblical-order">
+            {!isMobile ? (
+              <h2 id="biblical-order" className="mb-4 text-lg font-semibold text-sage-forest">
+                {t("chronology.biblicalOrder")}
+              </h2>
+            ) : null}
+            <div className="space-y-10">
+              {biblicalSectionsWithPos.map((section) => (
+                <section key={section.key} aria-labelledby={`bib-section-${section.key}`}>
+                  <h3
+                    id={`bib-section-${section.key}`}
+                    className="mb-4 text-base font-semibold text-sage-forest/90"
+                  >
+                    {t(`chronology.biblicalSections.${section.key}`)}
+                  </h3>
+                  <ol className="space-y-2 border-l-2 border-sage-primary/50 pl-4">
+                    {section.books.map(({ usfm, position }) => (
+                      <TimelineBookRow key={`bib-${usfm}`} usfm={usfm} position={position} />
+                    ))}
+                  </ol>
+                </section>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        {showChronological ? (
+          <section aria-labelledby="chronological-order">
+            {!isMobile ? (
+              <h2 id="chronological-order" className="mb-4 text-lg font-semibold text-sage-forest">
+                {t("chronology.chronologicalOrder")}
+              </h2>
+            ) : null}
+            <div className="space-y-12">
+              {sectionsWithPos.map((section) => (
+                <section key={section.eraKey} aria-labelledby={`era-${section.eraKey}`}>
+                  <h3
+                    id={`era-${section.eraKey}`}
+                    className="mb-4 text-base font-semibold text-sage-forest/90"
+                  >
+                    {t(`chronology.era.${section.eraKey}`)}
+                  </h3>
+                  <ol className="space-y-2 border-l-2 border-sage-primary/50 pl-4">
+                    {section.books.map(({ usfm, position }) => (
+                      <TimelineBookRow key={usfm} usfm={usfm} position={position} />
+                    ))}
+                  </ol>
+                </section>
+              ))}
+            </div>
+          </section>
+        ) : null}
       </div>
 
       <p className="mt-10 text-xs text-sage-dark/60">{t("chronology.disclaimer")}</p>

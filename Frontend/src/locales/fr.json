@@ -10,6 +10,13 @@
     "title": "ViaScripture",
     "search": "Recherche"
   },
+  "mobile": {
+    "openMenu": "Menu",
+    "closeMenu": "Fermer",
+    "graphTab": "Graphe",
+    "versesTab": "Versets",
+    "openInGraph": "Ouvrir dans le graphe"
+  },
   "language": {
     "en": "Anglais",
     "fr": "Français",
@@ -240,6 +247,8 @@
   },
   "compass": {
     "intro": "Ces cartes sont pour les jours où le cœur déborde. Choisissez celle qui ressemble le plus à ce que vous ressentez, puis cliquez sur un verset pour vous asseoir avec Dieu et sa Parole.",
+    "closeDetail": "Fermer",
+    "backToVerseList": "Retour à la liste des versets",
     "pickVerseHint": "Cliquez sur une référence ci‑dessous pour lire le verset et un court rappel de son contexte.",
     "noVerseSelected": "Choisissez une référence à gauche pour voir ici le verset et la réflexion.",
     "loadingVerse": "Chargement de ce verset dans les Écritures…",

@@ -464,9 +464,14 @@ export function AtlasView() {
               aria-hidden
             />
             <aside
-              className={`absolute right-0 top-0 h-full w-[22rem] max-w-[92%] border-l border-amber-200/70 bg-[#f7efe1]/95 p-4 shadow-xl transition-transform duration-300 ${
-                selectedPlaceKey ? "translate-x-0" : "translate-x-full"
-              }`}
+              className={`absolute border-amber-200/70 bg-[#f7efe1]/95 p-4 shadow-xl transition-transform duration-300
+                right-0 top-0 h-full w-[22rem] max-w-[92%] border-l
+                max-lg:inset-x-0 max-lg:bottom-0 max-lg:top-auto max-lg:h-auto max-lg:max-h-[75vh] max-lg:w-full max-lg:max-w-none max-lg:overflow-y-auto max-lg:rounded-t-2xl max-lg:border-l-0 max-lg:border-t
+                ${
+                  selectedPlaceKey
+                    ? "translate-x-0 max-lg:translate-y-0"
+                    : "translate-x-full max-lg:translate-x-0 max-lg:translate-y-full"
+                }`}
             >
               {selectedPlaceKey ? (
                 <div className="space-y-2">
