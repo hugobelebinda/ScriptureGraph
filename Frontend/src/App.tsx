@@ -5,9 +5,11 @@ import { ScrollToTop } from "./components/ScrollToTop";
 import { Sidebar } from "./components/Sidebar";
 import { AtlasView } from "./pages/AtlasView";
 import { ChronologicalView } from "./pages/ChronologicalView";
+import { CitiesView } from "./pages/CitiesView";
 import { CompassView } from "./pages/CompassView";
 import { GraphView } from "./pages/GraphView";
 import { Home } from "./pages/Home";
+import { JourneyVisualizer } from "./pages/JourneyVisualizer";
 
 export default function App() {
   const { pathname } = useLocation();
@@ -27,6 +29,8 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/graph" element={<GraphView />} />
             <Route path="/atlas" element={<AtlasView />} />
+            <Route path="/journeys" element={<JourneyVisualizer />} />
+            <Route path="/cities" element={<CitiesView />} />
             <Route path="/compass" element={<CompassView />} />
             <Route path="/chronological" element={<ChronologicalView />} />
           </Routes>

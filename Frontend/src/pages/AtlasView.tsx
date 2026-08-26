@@ -3,6 +3,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useIsBelowLg } from "../hooks/useMediaQuery";
+import { applyStarStyle, createStarMarkerElement } from "../lib/starMarker";
 import {
   ATLAS_DEFAULT_YEAR,
   ATLAS_MAX_YEAR,
@@ -54,15 +55,6 @@ function formatYear(year: number, lang: "en" | "fr"): string {
     return lang === "fr" ? `${year} apr. J.-C.` : `${year} AD`;
   }
   return lang === "fr" ? "0 (transition)" : "0 (transition)";
-}
-
-function applyStarStyle(el: HTMLButtonElement, zoom: number): void {
-  const size = Math.max(11, Math.min(14, 14 - (zoom - 3) * 0.45));
-  const opacity = Math.max(0.58, Math.min(1, 1 - (zoom - 3) * 0.055));
-  el.style.width = `${size}px`;
-  el.style.height = `${size}px`;
-  el.style.fontSize = `${Math.max(10, size - 1)}px`;
-  el.style.opacity = `${opacity}`;
 }
 
 export function AtlasView() {
@@ -337,15 +329,7 @@ export function AtlasView() {
     placeRepresentatives.forEach((star, placeKey) => {
       const booksAtPlace = starsByPlace.get(placeKey)?.length ?? 1;
 
-      const el = document.createElement("button");
-      el.type = "button";
-      el.className =
-        "flex items-center justify-center border border-amber-100/80 bg-[#f4a259]/90 text-white shadow-[0_0_0_1px_rgba(72,45,20,0.22)]";
-      el.style.borderRadius = "4px";
-      el.style.lineHeight = "1";
-      el.style.pointerEvents = "auto";
-      el.style.zIndex = "5";
-      el.textContent = "★";
+      const el = createStarMarkerElement();
       el.title =
         booksAtPlace > 1
           ? `${t(star.placeKey)} • ${booksAtPlace} ${t("atlas.booksLabel", { defaultValue: "books" })}`
