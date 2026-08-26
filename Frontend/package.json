@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "@tmcw/togeojson": "^7.1.2",
+    "@turf/bezier-spline": "^7.4.0",
+    "@turf/helpers": "^7.4.0",
     "@xmldom/xmldom": "^0.9.10",
     "cytoscape": "^3.33.3",
     "i18next": "^24.2.3",

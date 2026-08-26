@@ -31,6 +31,12 @@ export function Sidebar() {
         <NavLink to="/atlas" className={linkClass}>
           {t("nav.atlas")}
         </NavLink>
+        <NavLink to="/journeys" className={linkClass}>
+          {t("nav.journeys")}
+        </NavLink>
+        <NavLink to="/cities" className={linkClass}>
+          {t("nav.cities")}
+        </NavLink>
         <NavLink to="/graph" className={linkClass}>
           {t("nav.graph")}
         </NavLink>

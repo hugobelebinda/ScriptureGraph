@@ -1,8 +1,12 @@
 import "./loadEnv.js";
 import { type CrossReference, PrismaClient, type Verse } from "@prisma/client";
 
-const LOCAL_DOCKER_DATABASE_URL =
-  process.env.LOCAL_DATABASE_URL ?? "postgresql://postgres:password@localhost:5433/scripturegraph";
+const LOCAL_DOCKER_DATABASE_URL = process.env.LOCAL_DATABASE_URL;
+if (!LOCAL_DOCKER_DATABASE_URL) {
+  throw new Error(
+    "LOCAL_DATABASE_URL is required (local Postgres). Set it in .env; see .env.example.",
+  );
+}
 
 const REMOTE_DATABASE_URL = process.env.DATABASE_URL;
 if (!REMOTE_DATABASE_URL) {

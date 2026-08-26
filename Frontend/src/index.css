@@ -5,3 +5,94 @@
 body {
   @apply bg-sage-bg text-sage-dark antialiased;
 }
+
+/*
+ * A star is only 11-14px so that neighbouring sites stay distinguishable, which is well
+ * under a comfortable thumb target. On touch devices an invisible pseudo-element widens
+ * the tap area without enlarging the artwork. Mapbox already positions markers
+ * absolutely, so this anchors to the marker without needing `position: relative`.
+ */
+@media (pointer: coarse) {
+  .star-marker::after {
+    content: "";
+    position: absolute;
+    inset: -8px;
+  }
+}
+
+/*
+ * Star markers set an explicit z-index (see lib/starMarker.ts) but mapbox-gl.css leaves
+ * popups at `z-index: auto`, so a nearby marker would paint over the popup describing
+ * it. Both live inside the map container's own stacking context, so lifting the popup
+ * here keeps it below the page's panels and overlays.
+ */
+.mapboxgl-popup {
+  z-index: 10;
+}
+
+/*
+ * Journey waypoint popups. Mapbox paints its own white chrome and builds the tip
+ * from transparent borders, so the parchment look needs the container, the close
+ * button and every tip anchor variant overridden. Selectors are deliberately
+ * three classes deep to outrank the defaults in mapbox-gl.css.
+ */
+.journey-popup.mapboxgl-popup .mapboxgl-popup-content {
+  @apply rounded-xl border border-amber-200/70 bg-[#f7efe1] px-3 py-2.5 pr-6 shadow-xl;
+  transform: scale(var(--popup-scale, 1));
+}
+
+.journey-popup.mapboxgl-popup-anchor-bottom .mapboxgl-popup-content,
+.journey-popup.mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-content,
+.journey-popup.mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-content {
+  transform-origin: bottom center;
+}
+
+.journey-popup.mapboxgl-popup-anchor-top .mapboxgl-popup-content,
+.journey-popup.mapboxgl-popup-anchor-top-left .mapboxgl-popup-content,
+.journey-popup.mapboxgl-popup-anchor-top-right .mapboxgl-popup-content {
+  transform-origin: top center;
+}
+
+.journey-popup.mapboxgl-popup-anchor-left .mapboxgl-popup-content {
+  transform-origin: left center;
+}
+
+.journey-popup.mapboxgl-popup-anchor-right .mapboxgl-popup-content {
+  transform-origin: right center;
+}
+
+@media (max-width: 1023px) {
+  .journey-popup.mapboxgl-popup .mapboxgl-popup-content {
+    max-height: min(32vh, 13.5rem);
+    overflow-y: auto;
+    padding: 0.45rem 1.35rem 0.45rem 0.65rem;
+  }
+}
+
+.journey-popup.mapboxgl-popup .mapboxgl-popup-close-button {
+  @apply rounded-tr-xl px-1.5 py-0.5 text-base leading-none text-sage-dark/60;
+}
+
+.journey-popup.mapboxgl-popup .mapboxgl-popup-close-button:hover {
+  @apply bg-amber-200/50 text-sage-dark;
+}
+
+.journey-popup.mapboxgl-popup-anchor-top .mapboxgl-popup-tip,
+.journey-popup.mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip,
+.journey-popup.mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip {
+  border-bottom-color: #f7efe1;
+}
+
+.journey-popup.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip,
+.journey-popup.mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip,
+.journey-popup.mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip {
+  border-top-color: #f7efe1;
+}
+
+.journey-popup.mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
+  border-right-color: #f7efe1;
+}
+
+.journey-popup.mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
+  border-left-color: #f7efe1;
+}

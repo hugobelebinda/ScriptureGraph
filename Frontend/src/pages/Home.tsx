@@ -21,6 +21,18 @@ const HOME_CARDS = [
     descKey: "home.cards.atlas",
   },
   {
+    to: "/journeys",
+    imageSrc: "/home/journeys.png",
+    titleKey: "nav.journeys",
+    descKey: "home.cards.journeys",
+  },
+  {
+    to: "/cities",
+    imageSrc: "/home/cities.jpg",
+    titleKey: "nav.cities",
+    descKey: "home.cards.cities",
+  },
+  {
     to: "/graph",
     imageSrc: "/home/graph.png",
     titleKey: "nav.graph",
