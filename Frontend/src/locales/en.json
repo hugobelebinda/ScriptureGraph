@@ -6,7 +6,8 @@
     "journeys": "Journeys",
     "cities": "Cities",
     "compass": "Emotional Compass",
-    "chronological": "Timeline"
+    "chronological": "Timeline",
+    "interlinear": "Interlinear"
   },
   "sidebar": {
     "title": "ViaScripture",
@@ -48,8 +49,36 @@
       "atlas": "See scripture against geography and time: maps, places, and layers that connect the text to the ancient world.",
       "journeys": "Follow nine great biblical journeys across a 3D globe, stop by stop, with the events and passages behind each place.",
       "cities": "Open a biblical city on the globe and read the events that made it matter, from a handful of headlines down to the verse itself.",
-      "graph": "Move from book to chapter to reading view, then visualize how verses link together through cross-references."
+      "graph": "Move from book to chapter to reading view, then visualize how verses link together through cross-references.",
+      "interlinear": "Hover a word in the verse to see its Hebrew or Greek original, transliteration, and Strong's definition."
     }
+  },
+  "interlinear": {
+    "intro": "Read any chapter in the original Hebrew or Greek. Hover a word for its Strong's entry, then open other verses that use the same original word.",
+    "hint": "Dotted words are interactive. Hover or tap one to open its Strong's card.",
+    "loading": "Loading the chapter…",
+    "loadError": "The interlinear files are not available. Run npx tsx scripts/build-interlinear.ts",
+    "seeElsewhere": "See other places this word appears in the Bible",
+    "wordTitle": "Other occurrences",
+    "wordIntro": "Common words can appear thousands of times, so this page starts with a first page of hits and lets you load more. Open a row in the interlinear or the Graph to keep reading.",
+    "occurrencesHeading": "Verses with this word",
+    "occurrencesCount": "Showing {{shown}} of {{total}} verses. Rare words list everything; frequent words stay paginated so the page stays readable.",
+    "occurrencesEmpty": "No verses are indexed for this id yet.",
+    "entryMissing": "No Strong's definition is loaded for this id.",
+    "backToVerse": "Back to the interlinear",
+    "openInGraph": "Open in Graph",
+    "openInInterlinear": "Open in Interlinear",
+    "showMore": "Show more verses",
+    "verseLoading": "Loading the passage…",
+    "sources": "Definitions follow James Strong's Exhaustive Concordance (public domain). The hover-to-see-the-original reading idea is inspired by the online Bible of",
+    "churchName": "Église Baptiste Évangélique de Rosemont",
+    "inspirationEnd": ".",
+    "dataCredit": "Hebrew words come from the",
+    "dataCreditMid": " (WLC, CC BY 4.0). Greek tokens come from ",
+    "dataCreditEnd": " (public domain).",
+    "originHebrew": "Hebrew",
+    "originGreek": "Greek",
+    "glossCredit": "French cards keep a short UBS gloss (bcv-data/strongs, CC BY-SA 4.0) and a fuller rendering of the English Strong's article."
   },
   "journeys": {
     "intro": "Pick a journey to trace its route across the globe. Each star marks a stop; select one to read what happened there and the passages that record it.",

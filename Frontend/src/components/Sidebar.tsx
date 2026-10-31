@@ -40,6 +40,9 @@ export function Sidebar() {
         <NavLink to="/graph" className={linkClass}>
           {t("nav.graph")}
         </NavLink>
+        <NavLink to="/interlinear" className={linkClass}>
+          {t("nav.interlinear")}
+        </NavLink>
       </nav>
       <HierarchicalSearch
         onSelectVerse={(uid) => {
