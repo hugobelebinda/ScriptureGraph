@@ -14,6 +14,7 @@ Live site: [https://www.viascripture.com](https://www.viascripture.com)
 - Open a biblical city and read the events that made it matter, down to the verse.
 - Compare biblical order and historical order in one timeline view.
 - Discover curated verses by emotional/spiritual themes.
+- Hover a tagged word to see its Hebrew or Greek Strong's entry.
 - Switch instantly between English and French across the whole UI.
 
 ## Routes
@@ -27,6 +28,8 @@ Live site: [https://www.viascripture.com](https://www.viascripture.com)
 | `/cities` | City Events Explorer (`?city=` deep link) |
 | `/compass` | Emotional Compass |
 | `/chronological` | Timeline |
+| `/interlinear` | Interlinear (`?verse=GEN.1.1`) |
+| `/interlinear/word/:strongsId` | Strong's concordance (paginated) |
 
 ## Core Modules
 
@@ -75,6 +78,13 @@ Live site: [https://www.viascripture.com](https://www.viascripture.com)
 - Curated references + contextual summary.
 - Verse/chapter retrieval with caching helpers.
 
+### Interlinear
+- Full-Bible chapter reader: Hebrew OT (Open Scriptures / WLC) and Greek NT (Nestle 1904).
+- Hover or tap a dotted original-language word for a parchment Strong's card; WEB / LSG sits under each verse when the API is up.
+- `/interlinear/word/:strongsId` lists other verses with that original word, 20 at a time, with Show more. Frequent words are not dumped in one list.
+- Rebuild data with `npm run build:interlinear`.
+- Credit: Strong's (public domain); French cards add a short UBS gloss and a fuller rendering of the English Strong's article; hover idea inspired by Église Baptiste Évangélique de Rosemont.
+
 ## Product Screenshots (to add)
 
 - `docs/screenshots/home.png`
@@ -84,6 +94,7 @@ Live site: [https://www.viascripture.com](https://www.viascripture.com)
 - `docs/screenshots/cities.png`
 - `docs/screenshots/timeline.png`
 - `docs/screenshots/compass.png`
+- `docs/screenshots/interlinear.png`
 
 Example markdown once added:
 
@@ -119,7 +130,8 @@ npm install
 Copy `.env.example` to `.env` at the repo root. Minimum:
 
 ```env
-DATABASE_URL=postgresql://<user>:<password>@<host>:<port>/<database>
+DATABASE_URL=postgresql://<user>:<password>@aws-0-<region>.pooler.supabase.com:6543/postgres?pgbouncer=true
+DIRECT_URL=postgresql://<user>:<password>@aws-0-<region>.pooler.supabase.com:5432/postgres
 LOCAL_DATABASE_URL=postgresql://<user>:<password>@localhost:5433/<database>
 PORT=3001
 NODE_ENV=development
@@ -127,7 +139,8 @@ FRONTEND_ORIGIN=http://localhost:5173
 VITE_MAPBOX_TOKEN=pk.<your_mapbox_public_token>
 ```
 
-- `DATABASE_URL` — Prisma / API (local Postgres or the Supabase transaction pooler in production).
+- `DATABASE_URL` — Prisma / API. For Supabase’s transaction pooler (port `6543`), keep `?pgbouncer=true` so Prisma does not use prepared statements (avoids intermittent `prepared statement does not exist` 500s).
+- `DIRECT_URL` — session pooler or direct DB (port `5432`) for Prisma migrations.
 - `LOCAL_DATABASE_URL` — required only by `npm run migrate:data -w scripturegraph-backend` (one-off local → Supabase copy).
 - `FRONTEND_ORIGIN` — CORS allowlist. On Vercel this must be the live origin (`https://www.viascripture.com`).
 - `VITE_MAPBOX_TOKEN` — public Mapbox token. Vite reads env from the repo root (`Frontend/vite.config.ts` uses `envDir: ".."`). It must be present at **build** time for Atlas, Journeys, and Cities.
@@ -156,6 +169,7 @@ From repo root:
 - `npm run db:push -w scripturegraph-backend` — schema push
 - `npm run migrate:data -w scripturegraph-backend` — copy local DB to Supabase (`LOCAL_DATABASE_URL` + `DATABASE_URL`)
 - `npm run security:audit` — secrets, rate limit, RLS (N/A if unused), CORS, Zod validation
+- `npm run build:interlinear` — rebuild Hebrew/Greek interlinear JSON into `Frontend/public/interlinear/`
 
 Dataset checks (API must be running for verse-text checks):
 
@@ -205,7 +219,7 @@ Rate limits (in-memory, per isolate): 180/min general, 40/min on `/api/connectio
 - City event lists are curated, especially for Jerusalem, Rome, and other primary sites.
 - Coordinates come from OpenBible.info and carry an identification confidence score.
 - Frontend bundle can be optimized further with additional code splitting (Vite warns above 500 KB).
-- Prefer the Supabase session pooler for Prisma under concurrent verse fetches; the transaction pooler can 500 with `prepared statement does not exist`.
+- Supabase transaction pooler (port `6543`) must include `?pgbouncer=true` on `DATABASE_URL`. Without it, concurrent verse fetches can 500 with `prepared statement does not exist`.
 
 ## Name & Identity
 

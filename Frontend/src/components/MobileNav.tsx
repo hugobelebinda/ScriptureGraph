@@ -86,6 +86,9 @@ export function MobileNav() {
           <NavLink to="/graph" className={linkClass}>
             {t("nav.graph")}
           </NavLink>
+          <NavLink to="/interlinear" className={linkClass}>
+            {t("nav.interlinear")}
+          </NavLink>
         </nav>
         <LanguageToggle variant="drawer" />
         <HierarchicalSearch

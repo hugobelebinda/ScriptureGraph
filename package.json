@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "download-bible": "tsx scripts/download-bible.ts",
+    "build:interlinear": "tsx scripts/build-interlinear.ts",
     "build:atlas-mosaic": "tsx scripts/build-atlas-mosaic.ts",
     "generate:book-covers": "node scripts/generate-book-cover-svgs.mjs",
     "security:secrets": "node scripts/security/01-secret-management-audit.mjs",

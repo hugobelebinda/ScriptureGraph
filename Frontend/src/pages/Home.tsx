@@ -3,6 +3,12 @@ import { Link } from "react-router-dom";
 
 const HOME_CARDS = [
   {
+    to: "/interlinear",
+    titleKey: "nav.interlinear",
+    descKey: "home.cards.interlinear",
+    preview: "בְּרֵאשִׁית",
+  },
+  {
     to: "/chronological",
     imageSrc: "/home/chronological.png",
     titleKey: "nav.chronological",
@@ -48,12 +54,26 @@ function HomeFeatureCard(props: (typeof HOME_CARDS)[number]) {
       className="group grid h-[min(34rem,48vh)] w-full min-w-0 grid-rows-[35%_65%] overflow-hidden rounded-2xl border border-sage-primary/40 bg-white/90 shadow-md transition hover:border-sage-forest/50 hover:shadow-lg sm:h-[min(36rem,50vh)] sm:max-w-2xl sm:justify-self-center lg:max-w-none lg:justify-self-stretch lg:h-[min(38rem,52vh)]"
     >
       <div className="relative min-h-0 w-full overflow-hidden">
-        <img
-          src={props.imageSrc}
-          alt=""
-          className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
-        />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent to-sage-dark/25" />
+        {"imageSrc" in props && props.imageSrc ? (
+          <>
+            <img
+              src={props.imageSrc}
+              alt=""
+              className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+            />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent to-sage-dark/25" />
+          </>
+        ) : (
+          <div className="flex h-full items-center justify-center bg-sage-dark">
+            <p
+              className="font-hebrew text-4xl font-semibold text-zinc-100 transition duration-500 group-hover:scale-[1.03] sm:text-5xl"
+              dir="rtl"
+              lang="he"
+            >
+              {"preview" in props ? props.preview : ""}
+            </p>
+          </div>
+        )}
       </div>
       <div className="flex min-h-0 flex-col justify-center gap-2 overflow-y-auto p-5 sm:gap-2.5 sm:p-6">
         <h3 className="text-lg font-semibold tracking-tight text-sage-dark group-hover:text-sage-forest sm:text-xl">

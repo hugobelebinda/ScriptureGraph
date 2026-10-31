@@ -6,7 +6,8 @@
     "journeys": "Itinéraires",
     "cities": "Villes",
     "compass": "Boussole Emotionnelle",
-    "chronological": "Chronologie"
+    "chronological": "Chronologie",
+    "interlinear": "Interlinéaire"
   },
   "sidebar": {
     "title": "ViaScripture",
@@ -48,8 +49,36 @@
       "atlas": "Reliez les Écritures à la géographie et au temps : cartes, lieux et couches qui ancrent le texte dans le monde antique.",
       "journeys": "Suivez neuf grands itinéraires bibliques sur un globe 3D, étape par étape, avec les événements et les passages liés à chaque lieu.",
       "cities": "Ouvrez une ville biblique sur le globe et lisez les événements qui l'ont marquée, des titres jusqu'au verset lui-même.",
-      "graph": "Passez du livre au chapitre à la lecture, puis visualisez comment les versets se relient par les références croisées."
+      "graph": "Passez du livre au chapitre à la lecture, puis visualisez comment les versets se relient par les références croisées.",
+      "interlinear": "Survolez un mot du verset pour voir l'original hébreu ou grec, la translittération et la définition Strong."
     }
+  },
+  "interlinear": {
+    "intro": "Lisez n'importe quel chapitre en hébreu ou en grec. Survolez un mot pour sa fiche Strong, puis ouvrez d'autres versets qui utilisent le même mot original.",
+    "hint": "Les mots soulignés en pointillés sont interactifs. Survolez-les ou touchez-les pour ouvrir la fiche Strong.",
+    "loading": "Chargement du chapitre…",
+    "loadError": "Les fichiers interlinéaires sont absents. Exécutez npx tsx scripts/build-interlinear.ts",
+    "seeElsewhere": "Voir d'autres passages où ce mot apparaît dans la Bible",
+    "wordTitle": "Autres occurrences",
+    "wordIntro": "Les mots fréquents peuvent apparaître des milliers de fois : la page commence par une première série et vous laisse en charger davantage. Ouvrez une ligne dans l'interlinéaire ou le graphe pour continuer.",
+    "occurrencesHeading": "Versets avec ce mot",
+    "occurrencesCount": "{{shown}} versets sur {{total}}. Les mots rares listent tout ; les mots fréquents restent paginés pour rester lisibles.",
+    "occurrencesEmpty": "Aucun verset n'est encore indexé pour cet identifiant.",
+    "entryMissing": "Aucune définition Strong n'est chargée pour cet identifiant.",
+    "backToVerse": "Retour à l'interlinéaire",
+    "openInGraph": "Ouvrir dans le graphe",
+    "openInInterlinear": "Ouvrir dans l'interlinéaire",
+    "showMore": "Afficher plus de versets",
+    "verseLoading": "Chargement du passage…",
+    "sources": "Les définitions suivent la Concordance exhaustive de James Strong (domaine public). L'idée de survoler une traduction pour voir le mot original s'inspire de la Bible en ligne de",
+    "churchName": "l'Église Baptiste Évangélique de Rosemont",
+    "inspirationEnd": ".",
+    "dataCredit": "Les mots hébreux viennent de l'",
+    "dataCreditMid": " (WLC, CC BY 4.0). Les mots grecs viennent de ",
+    "dataCreditEnd": " (domaine public).",
+    "originHebrew": "Hébreu",
+    "originGreek": "Grec",
+    "glossCredit": "Les fiches françaises gardent une glose courte UBS (bcv-data/strongs, CC BY-SA 4.0) et une version plus complète de l'article Strong anglais."
   },
   "journeys": {
     "intro": "Choisissez un itinéraire pour suivre son tracé sur le globe. Chaque étoile marque une étape ; sélectionnez-en une pour lire ce qui s'y est passé et les passages qui le rapportent.",

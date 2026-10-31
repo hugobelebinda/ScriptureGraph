@@ -9,6 +9,8 @@ import { CitiesView } from "./pages/CitiesView";
 import { CompassView } from "./pages/CompassView";
 import { GraphView } from "./pages/GraphView";
 import { Home } from "./pages/Home";
+import { InterlinearView } from "./pages/InterlinearView";
+import { InterlinearWordView } from "./pages/InterlinearWordView";
 import { JourneyVisualizer } from "./pages/JourneyVisualizer";
 
 export default function App() {
@@ -28,6 +30,8 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/graph" element={<GraphView />} />
+            <Route path="/interlinear" element={<InterlinearView />} />
+            <Route path="/interlinear/word/:strongsId" element={<InterlinearWordView />} />
             <Route path="/atlas" element={<AtlasView />} />
             <Route path="/journeys" element={<JourneyVisualizer />} />
             <Route path="/cities" element={<CitiesView />} />

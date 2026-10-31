@@ -12,6 +12,9 @@ export default {
           dark: "#344E41",
         },
       },
+      fontFamily: {
+        hebrew: ['"Noto Serif Hebrew"', '"Noto Serif"', "serif"],
+      },
     },
   },
   plugins: [],
