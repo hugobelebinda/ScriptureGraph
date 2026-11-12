@@ -2,5 +2,8 @@
     "version": 2,
     "rewrites": [
       { "source": "/api/(.*)", "destination": "/api/index.ts" }
+    ],
+    "crons": [
+      { "path": "/api/verses/GEN/1", "schedule": "0 12 * * 1,4" }
     ]
   }
