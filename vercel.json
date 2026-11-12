@@ -3,7 +3,11 @@
     "rewrites": [
       { "source": "/api/(.*)", "destination": "/api/index.ts" }
     ],
-    "crons": [
-      { "path": "/api/verses/GEN/1", "schedule": "0 12 * * 1,4" }
-    ]
+    "schedules": {
+      "supabase-keepalive": {
+        "schedule": "0 12 * * 1,4",
+        "path": "/api/verses/GEN/1",
+        "requestMethod": "GET"
+      }
+    }
   }
