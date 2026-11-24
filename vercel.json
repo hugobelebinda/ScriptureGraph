@@ -5,7 +5,7 @@
     ],
     "schedules": {
       "supabase-keepalive": {
-        "schedule": "0 12 * * 1,4",
+        "schedule": "0 */3 * * *",
         "path": "/api/verses/GEN/1",
         "requestMethod": "GET"
       }
